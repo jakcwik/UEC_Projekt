@@ -45,7 +45,7 @@ module vga_example (
     .S(1'b0)
   );
 
-
+  reg [11:0] height_start, width_start;
   wire [11:0] rgb_out_bg, rgb_out_dr, rgb_out_rc, pixel_addr, rgb_pixel;
   wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
   wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc;
@@ -61,6 +61,11 @@ module vga_example (
   wire mouse_left, mouse_left_out_mouse;
   wire en_m;
   wire rst_d;
+  
+  reg[1:0] state;
+  wire game_timer, mouse_clicked_start,mouse_clicked_stop, uart_start;
+  
+  parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
 
   rst_d my_rst_d (
 	.rst_d(rst_d),
@@ -70,16 +75,16 @@ module vga_example (
   
   sync_delay my_sync_delay (
   	//inputs
-	.vs_in(vs_out_dr),
-	.hs_in(hs_out_dr),
+	.vs_in(vs_out_rc),
+	.hs_in(hs_out_rc),
 	 //inputs from draw_rect
     .xpos(xpos),
     .ypos(ypos),
-    .hcount(hcount_out_dr),
-    .vcount(vcount_out_dr),
-    .hblnk(hblnk_out_dr),
-	.vblnk(vblnk_out_dr),
-    .rgb_in(rgb_out_dr[11:0]),
+    .hcount(hcount_out_rc),
+    .vcount(vcount_out_rc),
+    .hblnk(hblnk_out_rc),
+	.vblnk(vblnk_out_rc),
+    .rgb_in(rgb_out_rc[11:0]),
 	//outputs
 	.vs_out(vs),
 	.hs_out(hs),
@@ -126,7 +131,7 @@ module vga_example (
 	.rst(rst_d),
 	.pclk(pclk)
   );
-  
+  /*
   draw_rect my_rect (
 	//inputs
   	.hcount_in(hcount_out_bg),
@@ -152,7 +157,7 @@ module vga_example (
 	.rst(rst_d),
 	.pclk(pclk)
   );
-  
+  */
   draw_rect_ctl my_draw_rect_ctl(
   //inputs
     .pclk(pclk),
@@ -185,6 +190,77 @@ module vga_example (
 	.rst(rst_d),
 	.pclk(pclk)
   );
+  
+    draw_rect_char start_rect_char (
+	//inputs
+  	.hcount_in(hcount_out_bg),
+	.hsync_in(hsync_out_bg),
+	.hblnk_in(hblnk_out_bg),
+	.vcount_in(vcount_out_bg),
+	.vsync_in(vsync_out_bg),
+	.vblnk_in(vblnk_out_bg),
+	.rgb_in(rgb_out_bg),
+	.char_pixels(char_pixels),
+	.width_start(width_start),
+	.height_start(height_start),
+	//outputs
+	.hcount_out(hcount_out_rc),
+	.hsync_out(hs_out_rc),
+	.hblnk_out(hblnk_out_rc),
+	.vcount_out(vcount_out_rc),
+	.vsync_out(vs_out_rc),
+	.vblnk_out(vblnk_out_rc),
+	.rgb_out(rgb_out_rc),
+	//.addr(char_addr),
+	.char_xy(char_xy),
+	.char_line(char_line),
+	//others
+	.rst(rst_d),
+	.pclk(pclk)
+  );
+  
+   font_rom start_font_rom (
+    .clk(pclk),
+	.addr({char_code,char_line}),
+	.char_line_pixels(char_pixels)
+  );
+  
+   char_rom_16x16 start_char_rom_16x16(
+    .clk(pclk),
+	.char_xy(char_xy),
+	.char_code_out(char_code)
+   );
+
+always @ (posedge clk) begin
+	if (rst_d) begin
+		state <= IDLE;
+		height_start <= 200;
+		width_start <= 200;
+	end
+	else
+		case (state)
+			IDLE:
+				if (mouse_clicked_start)
+					state <= WAIT;
+				else begin
+					state <= IDLE;
+					height_start <= 200;
+					width_start <= 200;
+				end
+			WAIT:
+				if (mouse_clicked_start & uart_start)
+					state <= GAME;
+				else
+					state <= WAIT;
+			GAME:
+				if (game_timer == 0)
+					state <= SCORE;
+				else if(mouse_clicked_stop)
+					state <= IDLE;
+				else
+					state <= IDLE;
+		endcase
+	end
 
    
    

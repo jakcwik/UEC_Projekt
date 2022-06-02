@@ -45,7 +45,7 @@ localparam RECT_HEIGHT = 64;
 localparam RECT_COLOR  = 12'hd_d_9;
 
 always@*
-    if ((hcount_d2>= xpos) && (hcount_d2< xpos + RECT_WIDTH) && (vcount_d2 >= ypos) && (vcount_d2 < ypos + RECT_HEIGHT))
+    if ((hcount_d2>= xpos) && (hcount_d2< xpos + RECT_WIDTH) && (vcount_d2 >= ypos) && (vcount_d2 < ypos + RECT_HEIGHT) && (rgb_pixel == 3'h000))
 		begin
 		rgb_nxt = rgb_pixel;
 		addry = vcount_in - ypos;

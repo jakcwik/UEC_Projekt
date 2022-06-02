@@ -19,6 +19,8 @@ module draw_rect_char (
   input wire vblnk_in,
   input wire hsync_in,
   input wire hblnk_in,
+  input wire [11:0] width_start,
+  input wire [11:0] height_start,
   output reg [10:0] vcount_out,
   output reg [10:0] hcount_out,
   output reg [11:0] rgb_out,
@@ -52,31 +54,31 @@ localparam TEXT_COLOR = 12'hf00;
 
 always@* begin
 	//HEIGHT OFFSET - żeby startowało bez względu na vcount
-	if(RECT_HEIGHT_START % 16 == 0)begin
+	if(height_start % 16 == 0)begin
 		rect_height_offset = 0;
 	end
 	else begin
-		rect_height_offset = vcount_in[3:0] < RECT_HEIGHT_START[3:0] ? 1 : 0;
+		rect_height_offset = vcount_in[3:0] < height_start[3:0] ? 1 : 0;
 	end
 	//WIDTH OFFSET - żeby startowało bez względu na hcount
-	if((RECT_WIDTH_START - 2) % 8 == 0)begin
+	if((width_start - 2) % 8 == 0)begin
 		rect_width_offset = 0;
 	end
 	else begin
-		rect_width_offset = hcount_in[3:0] < RECT_WIDTH_START[3:0] ? 1 : 0;
+		rect_width_offset = hcount_in[3:0] < width_start[3:0] ? 1 : 0;
 	end
 	//ograniczenie wyświetlania tekstu do prostokąta
 	//dane przed opóźnieniem - ustawienie dobrej pozycji początkowej dla wyświetlanego tekstu
-	if((hcount_in>= RECT_WIDTH_START) && (hcount_in < RECT_WIDTH_START + RECT_WIDTH) && (vcount_in >= RECT_HEIGHT_START) && (vcount_in < RECT_HEIGHT_START + RECT_HEIGHT))begin
-		char_xy_nxt = {vcount_in[7:4] - RECT_HEIGHT_START[7:4] - rect_height_offset, hcount_in[6:3] - RECT_WIDTH_START[6:3] - rect_width_offset};
-		char_line_nxt = vcount_in[3:0] - RECT_HEIGHT_START[3:0];
+	if((hcount_in>= width_start) && (hcount_in < width_start + RECT_WIDTH) && (vcount_in >= height_start) && (vcount_in < height_start + RECT_HEIGHT))begin
+		char_xy_nxt = {vcount_in[7:4] - height_start[7:4] - rect_height_offset, hcount_in[6:3] - width_start[6:3] - rect_width_offset};
+		char_line_nxt = vcount_in[3:0] - height_start[3:0];
 	end
 	else begin
 		char_xy_nxt = char_xy;
 		char_line_nxt = char_line;
 	end
 	//dane po opóźnieniu - wyświetlanie tekstu
-	if ((hcount_d2>= RECT_WIDTH_START) && (hcount_d2 < RECT_WIDTH_START + RECT_WIDTH) && (vcount_d2 >= RECT_HEIGHT_START) && (vcount_d2 < RECT_HEIGHT_START + RECT_HEIGHT))begin
+	if ((hcount_d2>= width_start) && (hcount_d2 < width_start + RECT_WIDTH) && (vcount_d2 >= height_start) && (vcount_d2 < height_start + RECT_HEIGHT))begin
 		if (char_pixels[3'b111-hcount_d4[2:0]] != 0) begin
 			rgb_nxt = TEXT_COLOR;
 		end
