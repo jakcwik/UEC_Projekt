@@ -1,0 +1,7 @@
+*.log
+*.jou
+*.debug
+*.str
+build
+run.tcl
+.Xil
