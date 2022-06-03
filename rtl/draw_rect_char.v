@@ -47,7 +47,7 @@ localparam RECT_WIDTH_START  = 50;
 localparam RECT_HEIGHT_START = 50;
 
 localparam RECT_WIDTH  = 128;
-localparam RECT_HEIGHT = 16;
+localparam RECT_HEIGHT = 212;
 
 localparam TEXT_COLOR = 12'hf00;
 

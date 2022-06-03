@@ -45,7 +45,7 @@ module vga_example (
     .S(1'b0)
   );
 
-  reg [11:0] height_start, width_start;
+ 
   wire [11:0] rgb_out_bg, rgb_out_dr, rgb_out_rc, pixel_addr, rgb_pixel;
   wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
   wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc;
@@ -63,6 +63,7 @@ module vga_example (
   wire rst_d;
   
   reg[1:0] state;
+  reg [11:0] height_start, width_start;
   wire game_timer, mouse_clicked_start,mouse_clicked_stop, uart_start;
   
   parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
@@ -230,12 +231,14 @@ module vga_example (
 	.char_xy(char_xy),
 	.char_code_out(char_code)
    );
+   
+
 
 always @ (posedge clk) begin
 	if (rst_d) begin
 		state <= IDLE;
-		height_start <= 200;
-		width_start <= 200;
+		height_start <= 186;
+		width_start <= 380;
 	end
 	else
 		case (state)
@@ -244,8 +247,8 @@ always @ (posedge clk) begin
 					state <= WAIT;
 				else begin
 					state <= IDLE;
-					height_start <= 200;
-					width_start <= 200;
+					height_start <= 192;
+					width_start <= 360;
 				end
 			WAIT:
 				if (mouse_clicked_start & uart_start)
