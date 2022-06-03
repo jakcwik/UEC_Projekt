@@ -35,11 +35,11 @@ module char_rom_16x16(
             case (char_xy)
                8'h00: char_code = 7'h4a; // J
                8'h01: char_code = 7'h65; // e
-               8'h02: char_code = 7'h73; // s
-               8'h03: char_code = 7'h7a; // z
-               8'h04: char_code = 7'h63; // c
-               8'h05: char_code = 7'h7a; // z
-               8'h06: char_code = 7'h65; // e   
+               8'h02: char_code = 7'h53; // S
+               8'h03: char_code = 7'h54; // T
+               8'h04: char_code = 7'h41; // A
+               8'h05: char_code = 7'h52; // R
+               8'h06: char_code = 7'h54; // T   
                8'h07: char_code = 7'h20; // 
                8'h08: char_code = 7'h50; // P
                8'h09: char_code = 7'h6f; // o

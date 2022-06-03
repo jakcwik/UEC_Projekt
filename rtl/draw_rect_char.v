@@ -47,7 +47,7 @@ localparam RECT_WIDTH_START  = 50;
 localparam RECT_HEIGHT_START = 50;
 
 localparam RECT_WIDTH  = 128;
-localparam RECT_HEIGHT = 256;
+localparam RECT_HEIGHT = 16;
 
 localparam TEXT_COLOR = 12'hf00;
 
@@ -70,7 +70,7 @@ always@* begin
 	//ograniczenie wyświetlania tekstu do prostokąta
 	//dane przed opóźnieniem - ustawienie dobrej pozycji początkowej dla wyświetlanego tekstu
 	if((hcount_in>= width_start) && (hcount_in < width_start + RECT_WIDTH) && (vcount_in >= height_start) && (vcount_in < height_start + RECT_HEIGHT))begin
-		char_xy_nxt = {vcount_in[7:4] - height_start[7:4] - rect_height_offset, hcount_in[6:3] - width_start[6:3] - rect_width_offset};
+		char_xy_nxt = {vcount_in[7:4] - height_start[7:4] - rect_height_offset, hcount_in[6:3] - width_start[6:3]};
 		char_line_nxt = vcount_in[3:0] - height_start[3:0];
 	end
 	else begin
