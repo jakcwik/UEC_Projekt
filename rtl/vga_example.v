@@ -62,9 +62,10 @@ module vga_example (
   wire en_m;
   wire rst_d;
   
-  reg[1:0] state;
-  reg [11:0] height_start, width_start;
-  wire game_timer, mouse_clicked_start,mouse_clicked_stop, uart_start;
+  reg [1:0] state;
+  reg [11:0] idle_height_play, idle_width_play;
+  reg [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
+  wire game_timer, rect_clicked_play,mouse_clicked_stop, uart_start;
   
   parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
 
@@ -72,6 +73,40 @@ module vga_example (
 	.rst_d(rst_d),
 	.locked(locked),
 	.clk(pclk)
+  );
+ 
+  vga_timing my_timing (
+	//outputs
+    .vcount(vcount),
+    .vsync(vsync),
+    .vblnk(vblnk),
+    .hcount(hcount),
+    .hsync(hsync),
+    .hblnk(hblnk),
+	//clock and reset
+    .pclk(pclk),
+    .rst(rst_d)  
+  );
+  
+  draw_background my_background (
+	//inputs
+	.hcount_in(hcount),
+	.hsync_in(hsync),
+	.hblnk_in(hblnk),
+	.vcount_in(vcount),
+	.vsync_in(vsync),
+	.vblnk_in(vblnk),
+	//outputs
+	.hsync_out(hsync_out_bg),
+	.hblnk_out(hblnk_out_bg),
+	.vcount_out(vcount_out_bg),
+	.hcount_out(hcount_out_bg),
+	.vsync_out(vsync_out_bg),
+	.vblnk_out(vblnk_out_bg),
+	.rgb_out(rgb_out_bg),
+	//others
+	.rst(rst_d),
+	.pclk(pclk)
   );
   
   sync_delay my_sync_delay (
@@ -99,78 +134,6 @@ module vga_example (
 	.pclk(pclk)
   );
 
-  vga_timing my_timing (
-	//outputs
-    .vcount(vcount),
-    .vsync(vsync),
-    .vblnk(vblnk),
-    .hcount(hcount),
-    .hsync(hsync),
-    .hblnk(hblnk),
-	//clock and reset
-    .pclk(pclk),
-    .rst(rst_d)  
-  );
-
-  draw_background my_background (
-	//inputs
-	.hcount_in(hcount),
-	.hsync_in(hsync),
-	.hblnk_in(hblnk),
-	.vcount_in(vcount),
-	.vsync_in(vsync),
-	.vblnk_in(vblnk),
-	//outputs
-	.hsync_out(hsync_out_bg),
-	.hblnk_out(hblnk_out_bg),
-	.vcount_out(vcount_out_bg),
-	.hcount_out(hcount_out_bg),
-	.vsync_out(vsync_out_bg),
-	.vblnk_out(vblnk_out_bg),
-	.rgb_out(rgb_out_bg),
-	//others
-	.rst(rst_d),
-	.pclk(pclk)
-  );
-  /*
-  draw_rect my_rect (
-	//inputs
-  	.hcount_in(hcount_out_bg),
-	.hsync_in(hsync_out_bg),
-	.hblnk_in(hblnk_out_bg),
-	.vcount_in(vcount_out_bg),
-	.vsync_in(vsync_out_bg),
-	.vblnk_in(vblnk_out_bg),
-	.rgb_in(rgb_out_bg),
-	.rgb_pixel(),
-	//outputs
-	.hcount_out(hcount_out_dr),
-	.hsync_out(hs_out_dr),
-	.hblnk_out(hblnk_out_dr),
-	.vcount_out(vcount_out_dr),
-	.vsync_out(vs_out_dr),
-	.vblnk_out(vblnk_out_dr),
-	.rgb_out(rgb_out_dr),
-	.xpos(xpos_out_drc),
-	.ypos(ypos_out_drc),
-	.pixel_addr(),
-	//others
-	.rst(rst_d),
-	.pclk(pclk)
-  );
-  */
-  draw_rect_ctl my_draw_rect_ctl(
-  //inputs
-    .pclk(pclk),
-    .rst(rst_d),
-    .mouse_xpos(xpos),
-    .mouse_ypos(ypos),
-    .mouse_left(mouse_left),
-	//outputs
-    .xpos(xpos_out_drc),
-    .ypos(ypos_out_drc)     
-  );
-
   MouseCtl my_MouseCtl (
 	.ps2_clk(ps2_clk),
 	.ps2_data(ps2_data),
@@ -180,8 +143,8 @@ module vga_example (
 	.rst(rst_d),
 	.clk(mclk)
   );
-  
-   cursor_sync my_cursor_sync (
+
+  cursor_sync my_cursor_sync (
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
 	.left(mouse_left_out_mouse),
@@ -192,7 +155,24 @@ module vga_example (
 	.pclk(pclk)
   );
   
-    draw_rect_char start_rect_char (
+  
+  
+  click_ctl play_click_ctl(
+  //inputs
+    .pclk(pclk),
+    .rst(rst_d),
+    .mouse_xpos(xpos),
+    .mouse_ypos(ypos),
+    .mouse_left(mouse_left),
+	.hstart(hstart_click_play),
+	.vstart(vstart_click_play),
+	.hlength(hlength_click_play),
+	.vlength(vlength_click_play),
+	//outputs
+    .rect_clicked(rect_clicked_play)     
+  );
+
+  draw_rect_char idle_rect_char (
 	//inputs
   	.hcount_in(hcount_out_bg),
 	.hsync_in(hsync_out_bg),
@@ -202,8 +182,8 @@ module vga_example (
 	.vblnk_in(vblnk_out_bg),
 	.rgb_in(rgb_out_bg),
 	.char_pixels(char_pixels),
-	.width_start(width_start),
-	.height_start(height_start),
+	.width_start(idle_width_play),
+	.height_start(idle_height_play),
 	//outputs
 	.hcount_out(hcount_out_rc),
 	.hsync_out(hs_out_rc),
@@ -220,13 +200,13 @@ module vga_example (
 	.pclk(pclk)
   );
   
-   font_rom start_font_rom (
+  font_rom start_font_rom (
     .clk(pclk),
 	.addr({char_code,char_line}),
 	.char_line_pixels(char_pixels)
   );
   
-   char_rom_16x16 start_char_rom_16x16(
+  char_rom_16x16 start_char_rom_16x16(
     .clk(pclk),
 	.char_xy(char_xy),
 	.char_code_out(char_code)
@@ -237,21 +217,31 @@ module vga_example (
 always @ (posedge clk) begin
 	if (rst_d) begin
 		state <= IDLE;
-		height_start <= 186;
-		width_start <= 380;
 	end
 	else
 		case (state)
 			IDLE:
-				if (mouse_clicked_start)
+				if (rect_clicked_play == 1) begin
 					state <= WAIT;
+					idle_height_play   <= 0;
+					vstart_click_play  <= 0;
+					idle_width_play    <= 0;
+					hstart_click_play  <= 0;
+					hlength_click_play <= 0;
+					vlength_click_play <= 0;
+				end
 				else begin
 					state <= IDLE;
-					height_start <= 192;
-					width_start <= 360;
+					idle_height_play   <= 186;
+					vstart_click_play  <= 186;
+					
+					idle_width_play    <= 380;
+					hstart_click_play  <= 380;
+					hlength_click_play <= 300;
+					vlength_click_play <= 100;
 				end
 			WAIT:
-				if (mouse_clicked_start & uart_start)
+				if (rect_clicked_play & uart_start)
 					state <= GAME;
 				else
 					state <= WAIT;

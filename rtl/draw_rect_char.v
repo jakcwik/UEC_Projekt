@@ -36,18 +36,15 @@ module draw_rect_char (
 
 reg [11:0] rgb_nxt, rgb_d, rgb_d2, rgb_d3, rgb_d4;
 reg [10:0] hcount_d, vcount_d, hcount_d2, vcount_d2, hcount_d3, vcount_d3,  hcount_d4, vcount_d4;
-reg [7:0] char_xy_nxt, char_xy_d;
-reg [3:0] char_line_nxt;
+reg [7:0] char_xy_nxt, char_xy_d, char_pixels_d;
+reg [3:0] char_line_nxt, char_line_d;
 reg [3:0] rect_height_offset;
 reg [2:0] rect_width_offset;
 reg hsync_d, vsync_d, hblnk_d, vblnk_d, hsync_d2, vsync_d2, hblnk_d2, vblnk_d2, hsync_d3, vsync_d3, hblnk_d3, vblnk_d3,  hsync_d4, vsync_d4, hblnk_d4, vblnk_d4;
 
 
-localparam RECT_WIDTH_START  = 50;
-localparam RECT_HEIGHT_START = 50;
-
 localparam RECT_WIDTH  = 128;
-localparam RECT_HEIGHT = 212;
+localparam RECT_HEIGHT = 16;
 
 localparam TEXT_COLOR = 12'hf00;
 
@@ -61,16 +58,16 @@ always@* begin
 		rect_height_offset = vcount_in[3:0] < height_start[3:0] ? 1 : 0;
 	end
 	//WIDTH OFFSET - żeby startowało bez względu na hcount
-	if((width_start - 2) % 8 == 0)begin
+	if((width_start - 1) % 8 == 0)begin
 		rect_width_offset = 0;
 	end
 	else begin
-		rect_width_offset = hcount_in[3:0] < width_start[3:0] ? 1 : 0;
+		rect_width_offset = hcount_in[2:0] < width_start[2:0] ? 1 : 0;
 	end
 	//ograniczenie wyświetlania tekstu do prostokąta
 	//dane przed opóźnieniem - ustawienie dobrej pozycji początkowej dla wyświetlanego tekstu
 	if((hcount_in>= width_start) && (hcount_in < width_start + RECT_WIDTH) && (vcount_in >= height_start) && (vcount_in < height_start + RECT_HEIGHT))begin
-		char_xy_nxt = {vcount_in[7:4] - height_start[7:4] - rect_height_offset, hcount_in[6:3] - width_start[6:3]};
+		char_xy_nxt = {vcount_in[7:4] - height_start[7:4] - rect_height_offset, hcount_in[6:3] - width_start[6:3] - rect_width_offset};
 		char_line_nxt = vcount_in[3:0] - height_start[3:0];
 	end
 	else begin
@@ -78,8 +75,8 @@ always@* begin
 		char_line_nxt = char_line;
 	end
 	//dane po opóźnieniu - wyświetlanie tekstu
-	if ((hcount_d2>= width_start) && (hcount_d2 < width_start + RECT_WIDTH) && (vcount_d2 >= height_start) && (vcount_d2 < height_start + RECT_HEIGHT))begin
-		if (char_pixels[3'b111-hcount_d4[2:0]] != 0) begin
+	if ((hcount_d3>= width_start) && (hcount_d3 < width_start + RECT_WIDTH) && (vcount_d3 >= height_start) && (vcount_d3 < height_start + RECT_HEIGHT))begin
+		if (char_pixels_d[3'b111-hcount_in[2:0]] != 0) begin
 			rgb_nxt = TEXT_COLOR;
 		end
 		else begin
@@ -101,6 +98,8 @@ always @(posedge pclk)begin
 		vblnk_d  <= vblnk_in;
 		rgb_d    <= rgb_in;
 		char_xy_d<= char_xy_nxt;
+		char_line_d <= char_line_nxt;
+		char_pixels_d <= char_pixels;
 	end
 	
 always @(posedge pclk)begin
@@ -155,8 +154,8 @@ always @(posedge pclk)
 		vsync_out  <= vsync_d3;
 		vblnk_out  <= vblnk_d3;
 		rgb_out    <= rgb_nxt;
-		char_xy    <= char_xy_d;
-		char_line  <= char_line_nxt;
+		char_xy    <= char_xy_nxt;
+		char_line  <= char_line_d;
 	end
 
 

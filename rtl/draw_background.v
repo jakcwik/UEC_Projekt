@@ -45,9 +45,9 @@ always@*
       else if (hcount_in == 799) rgb_nxt = 12'h0_0_f;
 	  // Active display, inicjały
 	  //Poziome części
-	  else if (((vcount_in >= 149 && vcount_in <= 150) || (vcount_in >= 248 && vcount_in <= 249) || (vcount_in >= 350 && vcount_in <= 351) || (vcount_in >= 448 && vcount_in <= 449)) && (hcount_in >= 249 && hcount_in <= 549)) rgb_nxt = 12'hc_6_1; 
+	  else if (((vcount_in >= 149 && vcount_in <= 150) || (vcount_in >= 248 && vcount_in <= 249)) && (hcount_in >= 249 && hcount_in <= 549)) rgb_nxt = 12'hc_6_1; 
       //Pionowe części
-	  else if (((vcount_in >= 149 && vcount_in <= 249) || (vcount_in >= 349 && vcount_in <= 449)) && ((hcount_in >= 249 && hcount_in <= 250) || (hcount_in >= 548 && hcount_in <= 549))) rgb_nxt = 12'hc_6_1;
+	  else if ((vcount_in >= 149 && vcount_in <= 249) && ((hcount_in >= 249 && hcount_in <= 250) || (hcount_in >= 548 && hcount_in <= 549))) rgb_nxt = 12'hc_6_1;
 	  // Active display, interior, fill with gray.
       // You will replace this with your own test.
       else rgb_nxt = 12'h8_8_8;    
