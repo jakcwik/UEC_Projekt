@@ -200,13 +200,13 @@ module vga_example (
 	.pclk(pclk)
   );
   
-  font_rom start_font_rom (
+  font_rom play_font_rom (
     .clk(pclk),
 	.addr({char_code,char_line}),
 	.char_line_pixels(char_pixels)
   );
   
-  char_rom_16x16 start_char_rom_16x16(
+  char_rom_play my_char_rom_play(
     .clk(pclk),
 	.char_xy(char_xy),
 	.char_code_out(char_code)
@@ -233,8 +233,7 @@ always @ (posedge clk) begin
 				else begin
 					state <= IDLE;
 					idle_height_play   <= 186;
-					vstart_click_play  <= 186;
-					
+					vstart_click_play  <= 186;				
 					idle_width_play    <= 380;
 					hstart_click_play  <= 380;
 					hlength_click_play <= 300;

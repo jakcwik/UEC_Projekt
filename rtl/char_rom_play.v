@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module char_rom_16x16(
+module char_rom_play(
 	input wire clk,
     input wire [7:0] char_xy,
     output reg [6:0] char_code_out 
