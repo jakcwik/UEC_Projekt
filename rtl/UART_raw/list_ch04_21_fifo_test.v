@@ -3,7 +3,7 @@ module fifo_test
    (
     input wire clk, reset,
     input wire [1:0] btn,
-    input wire [5:4] sw,
+    input wire [2:0] sw,
     output wire [7:0] led
    );
 

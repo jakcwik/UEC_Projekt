@@ -1,12 +1,12 @@
 //Listing 8.4
 module uart
    #( // Default setting:
-      // 38,400 baud, 8 data bits, 1 stop bit, 2^2 FIFO
+      // 19,200 baud, 8 data bits, 1 stop bit, 2^2 FIFO
       parameter DBIT = 8,     // # data bits
                 SB_TICK = 16, // # ticks for stop bits, 16/24/32
                               // for 1/1.5/2 stop bits
                 DVSR = 163,   // baud rate divisor
-                              // DVSR = 100M/(16*baud rate)
+                              // DVSR = 50M/(16*baud rate)
                 DVSR_BIT = 8, // # bits of DVSR
                 FIFO_W = 2    // # addr bits of FIFO
                               // # words in FIFO=2^FIFO_W
@@ -20,7 +20,7 @@ module uart
    );
 
    // signal declaration
-   wire tick, rx_done_tick, tx_done_tick, tx_temp;
+   wire tick, rx_done_tick, tx_done_tick;
    wire tx_empty, tx_fifo_not_empty;
    wire [7:0] tx_fifo_out, rx_data_out;
 
