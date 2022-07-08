@@ -3,6 +3,5 @@
 *.debug
 *.str
 build
-run.tcl
 .Xil
 .DS_Store
