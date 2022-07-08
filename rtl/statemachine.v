@@ -2,7 +2,7 @@ module state_machine (
 input wire  clk;
 input wire in;
 input wire reset;
-input wire uart_start;
+input wire start_game_uart;
 output reg [1:0] state_out;
 );
 
@@ -39,7 +39,7 @@ always @ (posedge clk) begin
 				else
 					state <= IDLE;
 			WAIT:
-				if (mouse_clicked_start & uart_start)
+				if (mouse_clicked_start && start_game_uart)
 					state <= GAME;
 				else
 					state <= WAIT;
