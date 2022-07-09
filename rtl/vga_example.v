@@ -214,7 +214,49 @@ module vga_example (
    
 
 
-always @ (posedge clk) begin
+  draw_rect_char wait_rect_char (
+	//inputs
+  	.hcount_in(hcount_out_bg),
+	.hsync_in(hsync_out_bg),
+	.hblnk_in(hblnk_out_bg),
+	.vcount_in(vcount_out_bg),
+	.vsync_in(vsync_out_bg),
+	.vblnk_in(vblnk_out_bg),
+	.rgb_in(rgb_out_bg),
+	.char_pixels(char_pixels),
+	.width_start(idle_width_play),
+	.height_start(idle_height_play),
+	//outputs
+	.hcount_out(hcount_out_rc),
+	.hsync_out(hs_out_rc),
+	.hblnk_out(hblnk_out_rc),
+	.vcount_out(vcount_out_rc),
+	.vsync_out(vs_out_rc),
+	.vblnk_out(vblnk_out_rc),
+	.rgb_out(rgb_out_rc),
+	//.addr(char_addr),
+	.char_xy(char_xy),
+	.char_line(char_line),
+	//others
+	.rst(rst_d),
+	.pclk(pclk)
+  );
+  
+  font_rom wait_font_rom (
+    .clk(pclk),
+	.addr({char_code,char_line}),
+	.char_line_pixels(char_pixels)
+  );
+  
+  char_rom_wait my_char_rom_wait(
+    .clk(pclk),
+	.char_xy(char_xy),
+	.char_code_out(char_code)
+   );
+   
+   
+   
+always@* begin
 	if (rst_d) begin
 		state <= IDLE;
 	end
@@ -222,22 +264,22 @@ always @ (posedge clk) begin
 		case (state)
 			IDLE:
 				if (rect_clicked_play == 1) begin
-					state <= WAIT;
-					idle_height_play   <= 0;
-					vstart_click_play  <= 0;
-					idle_width_play    <= 0;
-					hstart_click_play  <= 0;
-					hlength_click_play <= 0;
-					vlength_click_play <= 0;
+					state_nxt = WAIT;
+					idle_height_play_nxt   = 0;
+					vstart_click_play_nxt  = 0;
+					idle_width_play_nxt    = 0;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
 				end
 				else begin
-					state <= IDLE;
-					idle_height_play   <= 186;
-					vstart_click_play  <= 186;				
-					idle_width_play    <= 380;
-					hstart_click_play  <= 380;
-					hlength_click_play <= 300;
-					vlength_click_play <= 100;
+					state_nxt <= IDLE;
+					idle_height_play_nxt   = 186;
+					vstart_click_play_nxt  = 186;				
+					idle_width_play_nxt    = 380;
+					hstart_click_play_nxt  = 380;
+					hlength_click_play_nxt = 300;
+					vlength_click_play_nxt = 100;
 				end
 			WAIT:
 				if (rect_clicked_play & uart_start)
@@ -251,6 +293,37 @@ always @ (posedge clk) begin
 					state <= IDLE;
 				else
 					state <= IDLE;
+		endcase
+	end
+
+always @ (posedge clk) begin
+	if (rst_d) begin
+		state <= IDLE;
+	end
+	else
+		case (state)
+			IDLE:
+				begin
+					state <= state_nxt;
+					idle_height_play   <= idle_height_play_nxt;
+					vstart_click_play  <= vstart_click_play_nxt;
+					idle_width_play    <= idle_width_play_nxt;
+					hstart_click_play  <= hstart_click_play_nxt;
+					hlength_click_play <= hlength_click_play_nxt;
+					vlength_click_play <= vlength_click_play_nxt;
+				end
+			WAIT:
+				if (rect_clicked_play & uart_start)
+					state <= state_nxt;
+				else
+					state <= state_nxt;
+			GAME:
+				if (game_timer == 0)
+					state <= state_nxt;
+				else if(mouse_clicked_stop)
+					state <= state_nxt;
+				else
+					state <= state_nxt;
 		endcase
 	end
 
