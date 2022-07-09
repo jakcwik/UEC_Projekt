@@ -2,11 +2,12 @@ module state_machine (
 input wire  clk;
 input wire in;
 input wire reset;
-output reg  [1:0]out;
+input wire start_game_uart;
+output reg [1:0] state_out;
 );
 
 
-reg     [1:0]out;
+reg     [1:0]state_out; //bylo out
 reg     [1:0]state;
 
 parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
@@ -15,15 +16,15 @@ parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
 always @ (state) begin
 	case (state)
 	IDLE:
-	   out = 2'b00;
+	   state_out = 2'b00;
 	WAIT:
-	   out = 2'b01;
+	   state_out = 2'b01;
 	GAME:
-	   out = 2'b10;
+	   state_out = 2'b10;
 	SCORE:
-	   out = 2'b11;
+	   state_out = 2'b11;
 	default:
-	   out = 2'b00;
+	   state_out = 2'b00;
 	endcase
 end
 
@@ -38,7 +39,7 @@ always @ (posedge clk) begin
 				else
 					state <= IDLE;
 			WAIT:
-				if (mouse_clicked_start & uart_start)
+				if (mouse_clicked_start && start_game_uart)
 					state <= GAME;
 				else
 					state <= WAIT;
