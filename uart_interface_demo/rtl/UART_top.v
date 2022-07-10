@@ -51,6 +51,8 @@ module UART_top(
         .score_2nd_player(score_2nd_player)
     ); 
         
+    wire end_of_time;
+        
     sm my_sm(
         //inputs
         .clk(clk), 
@@ -60,10 +62,20 @@ module UART_top(
         .BUT3(BUT3),
         .rival_score(score_2nd_player), 
         .start_sig(start_game),
+        .end_of_time(end_of_time),
         //outputs
         .my_score(my_score),
         .LED1(LED1),
         .state_out(state_out)
     );
+    
+    game_timer my_game_timer(
+    //inputs
+    .clk(clk),
+    .rst(rst),  
+    .state_in(state_out),      
+    //outputs
+    .end_of_time(end_of_time)
+    ); 
 
 endmodule

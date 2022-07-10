@@ -4,7 +4,8 @@ module sm (
 input wire clk, rst,
 input wire BUT1, BUT2, BUT3, 
 input wire [7:0] rival_score, 
-input wire start_sig,
+input wire start_sig,           //start indicator from 2nd device
+input wire end_of_time,         //signal to go from GAME to SCORE
 
 output reg [7:0] my_score,
 output reg LED1,
@@ -19,13 +20,12 @@ reg LED1_nxt;
 
 always@* begin
     my_score_nxt = 0;
-    //LED1_NXT = 1'b0;
-    //if(state == SCORE)begin
     if(state == SCORE)begin
         my_score_nxt = 8'b10101010;
         if(rival_score == 8'b00001111) LED1_nxt = 1'b1;
         else LED1_nxt = 1'b0;
     end
+    else LED1_nxt = 1'b0; 
 end
 
 assign state_out = state;
@@ -42,7 +42,8 @@ always@(posedge clk) begin
     case(state)
         IDLE: state <= BUT1 ? WAIT:IDLE;
         WAIT: state <= start_sig ? GAME:WAIT;
-        GAME: state <= BUT2 ? SCORE:GAME;
+        //GAME: state <= BUT2 ? SCORE:GAME;
+        GAME: state <= end_of_time? SCORE:GAME;
         SCORE: state <= BUT3 ? IDLE:SCORE;
     endcase
     end

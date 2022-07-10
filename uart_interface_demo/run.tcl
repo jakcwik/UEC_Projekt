@@ -48,8 +48,9 @@ read_verilog {
     rtl/UART_top.v
     rtl/uart_interface.v
     rtl/sm.v
+    rtl/game_timer.v
 }
-#rtl/data_in.v
+
 
 
 #add_files -fileset sim_1 {
