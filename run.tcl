@@ -60,6 +60,7 @@ read_verilog {
     rtl/cursor_sync.v
     rtl/click_ctl.v
     rtl/state_machine.v
+    rtl/game_timer.v
   
 }
 

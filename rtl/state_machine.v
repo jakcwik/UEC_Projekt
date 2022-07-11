@@ -4,7 +4,6 @@ input wire pclk,
 input wire rect_clicked_play,
 input wire rst_d,
 input wire uart_start,
-input wire game_timer,
 input wire mouse_clicked_stop,
 input wire [11:0] rgb_out_rc_play,
 input wire [11:0] rgb_out_rc_wait,
@@ -23,8 +22,16 @@ reg[11:0]  rgb_out_rc_nxt;
 reg[11:0]  idle_height_play_nxt, idle_width_play_nxt;
 reg[10:0]  hstart_click_play_nxt, vstart_click_play_nxt, hlength_click_play_nxt, vlength_click_play_nxt;
 
+wire game_timer;
+
 parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11;
 
+  game_timer my_game_timer(
+  .clk(pclk),
+  .rst(rst_d),
+  .state_in(state),
+  .end_of_time(game_timer)
+  );
 
 always@* begin
 	if (rst_d) begin

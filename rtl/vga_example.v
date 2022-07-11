@@ -65,9 +65,8 @@ module vga_example (
   
   wire [11:0] idle_height_play, idle_width_play;
   wire [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
-  wire game_timer, rect_clicked_play,mouse_clicked_stop, uart_start;
+  wire rect_clicked_play,mouse_clicked_stop, uart_start;
   
-  parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
 
 //ALL STATES
 
@@ -77,7 +76,6 @@ module vga_example (
 	//inputs
 	.rect_clicked_play(rect_clicked_play),
 	.uart_start(uart_start),
-	.game_timer(game_timer),
 	.mouse_clicked_stop(mouse_clicked_stop),
 	//outputs
 	.rgb_out_rc_play(rgb_out_rc_play),
