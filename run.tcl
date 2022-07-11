@@ -59,6 +59,7 @@ read_verilog {
     rtl/char_rom_wait.v
     rtl/cursor_sync.v
     rtl/click_ctl.v
+    rtl/state_machine.v
   
 }
 

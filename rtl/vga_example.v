@@ -46,8 +46,8 @@ module vga_example (
   );
 
  
-  wire [11:0] rgb_out_bg, rgb_out_dr, rgb_out_rc_wait, rgb_out_rc_play, pixel_addr, rgb_pixel;
-  reg  [11:0]  rgb_out_rc, rgb_out_rc_nxt;
+  wire [11:0] rgb_out_bg, rgb_out_dr, pixel_addr, rgb_pixel;
+  wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play;
   wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
   wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc;
   wire [10:0] hcount, hcount_out_bg, hcount_out_dr, hcount_out_rc;
@@ -63,15 +63,35 @@ module vga_example (
   wire en_m;
   wire rst_d;
   
-  reg [1:0] state, state_nxt;
-  reg [11:0] idle_height_play, idle_width_play, idle_height_play_nxt, idle_width_play_nxt;
-  reg [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play, hstart_click_play_nxt, vstart_click_play_nxt, hlength_click_play_nxt, vlength_click_play_nxt;
+  wire [11:0] idle_height_play, idle_width_play;
+  wire [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
   wire game_timer, rect_clicked_play,mouse_clicked_stop, uart_start;
   
   parameter IDLE = 0, WAIT = 1, GAME = 2, SCORE = 3;
 
 //ALL STATES
 
+  state_machine my_state_machine(
+	.pclk(pclk),
+	.rst_d(rst_d),
+	//inputs
+	.rect_clicked_play(rect_clicked_play),
+	.uart_start(uart_start),
+	.game_timer(game_timer),
+	.mouse_clicked_stop(mouse_clicked_stop),
+	//outputs
+	.rgb_out_rc_play(rgb_out_rc_play),
+	.rgb_out_rc_wait(rgb_out_rc_wait),
+	.idle_height_play(idle_height_play),
+	.idle_width_play(idle_width_play),
+	.vstart_click_play(vstart_click_play),
+	.hstart_click_play(hstart_click_play),
+	.hlength_click_play(hlength_click_play),
+	.vlength_click_play(vlength_click_play),
+	.rgb_out_rc(rgb_out_rc)
+  
+  );
+  
   rst_d my_rst_d (
 	.rst_d(rst_d),
 	.locked(locked),
@@ -263,87 +283,6 @@ module vga_example (
 
 // STATE SCORE
    
-always@* begin
-	if (rst_d) begin
-		state_nxt <= IDLE;
-	end
-	else
-		case (state)
-			IDLE:
-				if (rect_clicked_play == 1) begin
-					state_nxt = WAIT;
-					idle_height_play_nxt   = 0;
-					vstart_click_play_nxt  = 0;
-					idle_width_play_nxt    = 0;
-					hstart_click_play_nxt  = 0;
-					hlength_click_play_nxt = 0;
-					vlength_click_play_nxt = 0;
-					rgb_out_rc_nxt = rgb_out_rc_wait;
-				end
-				else begin
-					state_nxt <= IDLE;
-					idle_height_play_nxt   = 186;
-					vstart_click_play_nxt  = 186;				
-					idle_width_play_nxt    = 380;
-					hstart_click_play_nxt  = 380;
-					hlength_click_play_nxt = 300;
-					vlength_click_play_nxt = 100;
-					rgb_out_rc_nxt = rgb_out_rc_play;
-				end
-			WAIT:
-				if (rect_clicked_play & uart_start) begin
-					state_nxt <= GAME;
-					rgb_out_rc_nxt <= rgb_out_rc_wait;
-				end
-				else begin
-					state_nxt <= WAIT;
-					rgb_out_rc_nxt <= rgb_out_rc_wait;
-				end
-			GAME:
-				if (game_timer == 0)
-					state_nxt <= SCORE;
-				else if(mouse_clicked_stop)
-					state_nxt <= IDLE;
-				else
-					state_nxt <= IDLE;
-		endcase
-	end
-
-always @ (posedge pclk) begin
-	if (rst_d) begin
-		state <= IDLE;
-	end
-	else
-		case (state)
-			IDLE:
-				begin
-					state <= state_nxt;
-					idle_height_play   <= idle_height_play_nxt;
-					vstart_click_play  <= vstart_click_play_nxt;
-					idle_width_play    <= idle_width_play_nxt;
-					hstart_click_play  <= hstart_click_play_nxt;
-					hlength_click_play <= hlength_click_play_nxt;
-					vlength_click_play <= vlength_click_play_nxt;
-					rgb_out_rc         <= rgb_out_rc_nxt;
-				end
-			WAIT:
-				if (rect_clicked_play & uart_start) begin
-					state <= state_nxt;
-					rgb_out_rc         <= rgb_out_rc_nxt;
-				end
-				else begin
-					state <= state_nxt;
-					rgb_out_rc         <= rgb_out_rc_nxt;
-				end
-			GAME:
-				if (game_timer == 0)
-					state <= state_nxt;
-				else if(mouse_clicked_stop)
-					state <= state_nxt;
-				else
-					state <= state_nxt;
-		endcase
-	end
 
    
    
