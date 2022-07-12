@@ -26,6 +26,7 @@ module vga_example (
 
   wire locked;
   wire pclk, mclk;
+  wire rst_d;
  
   clk_wiz_0 my_clk_wiz_0(
     .clk(clk),
@@ -33,6 +34,12 @@ module vga_example (
     .clk100MHz(mclk),
     .reset(rst),
     .locked(locked)
+  );
+  
+  rst_d my_rst_d (
+	.rst_d(rst_d),
+	.locked(locked),
+	.clk(pclk)
   );
 
   ODDR pclk_oddr (
@@ -46,26 +53,28 @@ module vga_example (
   );
 
  
-  wire [11:0] rgb_out_bg, rgb_out_dr, pixel_addr, rgb_pixel;
-  wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play;
+  wire [11:0] rgb_out_bg, rgb_out_dr; 
+  wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play, rgb_out_rc_score;
+  wire [11:0] pixel_addr, rgb_pixel;
   wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
   wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc;
   wire [10:0] hcount, hcount_out_bg, hcount_out_dr, hcount_out_rc;
   wire [10:0] char_addr;
-  wire [7:0] char_pixels_play, char_pixels_wait, char_xy;
-  wire [6:0] char_code_play, char_code_wait;
-  wire [3:0] char_line;
+  wire [7:0] char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
+  wire [6:0] char_code_play, char_code_wait, char_code_score;
+  wire [3:0] char_line_play, char_line_wait, char_line_score;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
   wire hsync, hsync_out_bg, hs_out_dr, hs_out_rc;
   wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc;
   wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc;
   wire mouse_left, mouse_left_out_mouse;
-  wire en_m;
-  wire rst_d;
+
   
   wire [11:0] idle_height_play, idle_width_play;
   wire [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
   wire rect_clicked_play,mouse_clicked_stop, uart_start;
+  wire [15:0] my_score, op_score;
+  wire [1:0] state;
   
 
 //ALL STATES
@@ -77,9 +86,10 @@ module vga_example (
 	.rect_clicked_play(rect_clicked_play),
 	.uart_start(uart_start),
 	.mouse_clicked_stop(mouse_clicked_stop),
-	//outputs
 	.rgb_out_rc_play(rgb_out_rc_play),
 	.rgb_out_rc_wait(rgb_out_rc_wait),
+	.rgb_out_rc_score(rgb_out_rc_score),
+	//outputs
 	.idle_height_play(idle_height_play),
 	.idle_width_play(idle_width_play),
 	.vstart_click_play(vstart_click_play),
@@ -88,12 +98,6 @@ module vga_example (
 	.vlength_click_play(vlength_click_play),
 	.rgb_out_rc(rgb_out_rc)
   
-  );
-  
-  rst_d my_rst_d (
-	.rst_d(rst_d),
-	.locked(locked),
-	.clk(pclk)
   );
  
   vga_timing my_timing (
@@ -117,6 +121,7 @@ module vga_example (
 	.vcount_in(vcount),
 	.vsync_in(vsync),
 	.vblnk_in(vblnk),
+	.state(state),
 	//outputs
 	.hsync_out(hsync_out_bg),
 	.hblnk_out(hblnk_out_bg),
@@ -216,8 +221,8 @@ module vga_example (
 	.vblnk_out(vblnk_out_rc),
 	.rgb_out(rgb_out_rc_play),
 	//.addr(char_addr),
-	.char_xy(char_xy),
-	.char_line(char_line),
+	.char_xy(char_xy_play),
+	.char_line(char_line_play),
 	//others
 	.rst(rst_d),
 	.pclk(pclk)
@@ -225,13 +230,13 @@ module vga_example (
   
   font_rom play_font_rom (
     .clk(pclk),
-	.addr({char_code_play,char_line}),
+	.addr({char_code_play,char_line_play}),
 	.char_line_pixels(char_pixels_play)
   );
   
   char_rom_play my_char_rom_play(
     .clk(pclk),
-	.char_xy(char_xy),
+	.char_xy(char_xy_play),
 	.char_code_out(char_code_play)
    );
    
@@ -258,8 +263,8 @@ module vga_example (
 	.vblnk_out(vblnk_out_rc),
 	.rgb_out(rgb_out_rc_wait),
 	//.addr(char_addr),
-	.char_xy(char_xy),
-	.char_line(char_line),
+	.char_xy(char_xy_wait),
+	.char_line(char_line_wait),
 	//others
 	.rst(rst_d),
 	.pclk(pclk)
@@ -267,13 +272,13 @@ module vga_example (
   
   font_rom wait_font_rom (
     .clk(pclk),
-	.addr({char_code_wait,char_line}),
+	.addr({char_code_wait,char_line_wait}),
 	.char_line_pixels(char_pixels_wait)
   );
   
   char_rom_wait my_char_rom_wait(
     .clk(pclk),
-	.char_xy(char_xy),
+	.char_xy(char_xy_wait),
 	.char_code_out(char_code_wait)
    );
    
@@ -281,10 +286,48 @@ module vga_example (
 
 // STATE SCORE
    
-
-   
-   
-
+  draw_rect_char score_rect_char (
+	//inputs
+  	.hcount_in(hcount_out_bg),
+	.hsync_in(hsync_out_bg),
+	.hblnk_in(hblnk_out_bg),
+	.vcount_in(vcount_out_bg),
+	.vsync_in(vsync_out_bg),
+	.vblnk_in(vblnk_out_bg),
+	.rgb_in(rgb_out_bg),
+	.char_pixels(char_pixels_score),
+	.width_start(idle_width_play),
+	.height_start(idle_height_play),
+	//outputs
+	.hcount_out(hcount_out_rc),
+	.hsync_out(hs_out_rc),
+	.hblnk_out(hblnk_out_rc),
+	.vcount_out(vcount_out_rc),
+	.vsync_out(vs_out_rc),
+	.vblnk_out(vblnk_out_rc),
+	.rgb_out(rgb_out_rc_score),
+	//.addr(char_addr),
+	.char_xy(char_xy_score),
+	.char_line(char_line_score),
+	//others
+	.rst(rst_d),
+	.pclk(pclk)
+  );
   
-
+  font_rom score_font_rom (
+    .clk(pclk),
+	.addr({char_code_score,char_line_score}),
+	.char_line_pixels(char_pixels_score)
+  );
+  
+  char_rom_score my_char_rom_score(
+    .clk(pclk),
+	.char_xy(char_xy_score),
+	.char_code_out(char_code_score),
+	.my_score(14'h3132),
+	.op_score(14'h3334),
+	.number_of_player(7'h32)
+   );
+   
+   
 endmodule

@@ -44,7 +44,7 @@ reg hsync_d, vsync_d, hblnk_d, vblnk_d, hsync_d2, vsync_d2, hblnk_d2, vblnk_d2, 
 
 
 localparam RECT_WIDTH  = 128;
-localparam RECT_HEIGHT = 16;
+localparam RECT_HEIGHT = 64;
 
 localparam TEXT_COLOR = 12'hf00;
 

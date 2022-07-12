@@ -61,7 +61,7 @@ read_verilog {
     rtl/click_ctl.v
     rtl/state_machine.v
     rtl/game_timer.v
-  
+    rtl/char_rom_score.v
 }
 
 read_vhdl {

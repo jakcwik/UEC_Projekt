@@ -17,6 +17,7 @@ module draw_background (
   input wire [10:0] hcount_in,
   input wire hsync_in,
   input wire hblnk_in,
+  input wire [1:0] state,
   output reg [10:0] vcount_out,
   output reg vsync_out,
   output reg vblnk_out,
@@ -45,9 +46,9 @@ always@*
       else if (hcount_in == 799) rgb_nxt = 12'h0_0_f;
 	  // Active display, inicjały
 	  //Poziome części
-	  else if (((vcount_in >= 149 && vcount_in <= 150) || (vcount_in >= 248 && vcount_in <= 249)) && (hcount_in >= 249 && hcount_in <= 549)) rgb_nxt = 12'hc_6_1; 
+	  else if (((vcount_in >= 149 && vcount_in <= 150) || (vcount_in >= 248 && vcount_in <= 249)) && (hcount_in >= 249 && hcount_in <= 549) && state==2'b00) rgb_nxt = 12'hc_6_1; 
       //Pionowe części
-	  else if ((vcount_in >= 149 && vcount_in <= 249) && ((hcount_in >= 249 && hcount_in <= 250) || (hcount_in >= 548 && hcount_in <= 549))) rgb_nxt = 12'hc_6_1;
+	  else if ((vcount_in >= 149 && vcount_in <= 249) && ((hcount_in >= 249 && hcount_in <= 250) || (hcount_in >= 548 && hcount_in <= 549)) && state==2'b00) rgb_nxt = 12'hc_6_1;
 	  // Active display, interior, fill with gray.
       // You will replace this with your own test.
       else rgb_nxt = 12'h8_8_8;    

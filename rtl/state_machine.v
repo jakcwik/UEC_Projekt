@@ -7,13 +7,15 @@ input wire uart_start,
 input wire mouse_clicked_stop,
 input wire [11:0] rgb_out_rc_play,
 input wire [11:0] rgb_out_rc_wait,
+input wire [11:0] rgb_out_rc_score,
 output reg [11:0] idle_height_play,
 output reg [10:0] vstart_click_play,
 output reg [11:0] idle_width_play,
 output reg [10:0] hstart_click_play,
 output reg [10:0] hlength_click_play,
 output reg [10:0] vlength_click_play,
-output reg [11:0] rgb_out_rc
+output reg [11:0] rgb_out_rc,
+output reg [1:0] state
 );
 
 
@@ -35,23 +37,23 @@ parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11;
 
 always@* begin
 	if (rst_d) begin
-		state_nxt <= IDLE;
+		state_nxt = SCORE;
 	end
 	else
 		case (state)
 			IDLE:
 				if (rect_clicked_play == 1) begin
-					state_nxt = WAIT;
-					idle_height_play_nxt   = 0;
+					state_nxt 			   = WAIT;
+					idle_height_play_nxt   = 186;
 					vstart_click_play_nxt  = 0;
-					idle_width_play_nxt    = 0;
+					idle_width_play_nxt    = 380;
 					hstart_click_play_nxt  = 0;
 					hlength_click_play_nxt = 0;
 					vlength_click_play_nxt = 0;
 					rgb_out_rc_nxt = rgb_out_rc_wait;
 				end
 				else begin
-					state_nxt <= IDLE;
+					state_nxt 			   = IDLE;
 					idle_height_play_nxt   = 186;
 					vstart_click_play_nxt  = 186;				
 					idle_width_play_nxt    = 380;
@@ -63,25 +65,36 @@ always@* begin
 			WAIT:
 				if (rect_clicked_play & uart_start) begin
 					state_nxt <= GAME;
-					rgb_out_rc_nxt <= rgb_out_rc_wait;
+					rgb_out_rc_nxt = rgb_out_rc_wait;
 				end
 				else begin
-					state_nxt <= WAIT;
-					rgb_out_rc_nxt <= rgb_out_rc_wait;
+					state_nxt 			   = WAIT;
+					rgb_out_rc_nxt 		   = rgb_out_rc_wait;
+					idle_height_play_nxt   = 186;
+					idle_width_play_nxt    = 380;
 				end
 			GAME:
 				if (game_timer == 0)
-					state_nxt <= SCORE;
+					state_nxt = SCORE;
 				else if(mouse_clicked_stop)
-					state_nxt <= IDLE;
+					state_nxt = IDLE;
 				else
-					state_nxt <= IDLE;
+					state_nxt = IDLE;
+			SCORE:
+				if(mouse_clicked_stop)
+					state_nxt = IDLE;
+				else begin
+					state_nxt			   = SCORE;
+					rgb_out_rc_nxt 		   = rgb_out_rc_score;
+					idle_height_play_nxt   = 186;
+					idle_width_play_nxt    = 380;
+				end
 		endcase
 	end
 
 always @ (posedge pclk) begin
 	if (rst_d) begin
-		state <= IDLE;
+		state <= SCORE;
 	end
 	else
 		case (state)
@@ -97,21 +110,23 @@ always @ (posedge pclk) begin
 					rgb_out_rc         <= rgb_out_rc_nxt;
 				end
 			WAIT:
-				if (rect_clicked_play & uart_start) begin
+				begin
 					state <= state_nxt;
 					rgb_out_rc         <= rgb_out_rc_nxt;
-				end
-				else begin
-					state <= state_nxt;
-					rgb_out_rc         <= rgb_out_rc_nxt;
+					idle_height_play   <= idle_height_play_nxt;
+					idle_width_play    <= idle_width_play_nxt;
 				end
 			GAME:
-				if (game_timer == 0)
+				begin
 					state <= state_nxt;
-				else if(mouse_clicked_stop)
-					state <= state_nxt;
-				else
-					state <= state_nxt;
+				end
+			SCORE:
+				begin
+					state <= state;
+					rgb_out_rc         <= rgb_out_rc_nxt;
+					idle_height_play   <= idle_height_play_nxt;
+					idle_width_play    <= idle_width_play_nxt;
+				end
 		endcase
 	end
 endmodule

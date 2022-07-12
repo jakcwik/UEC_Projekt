@@ -20,8 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module char_rom_wait(
+module char_rom_score(
 	input wire clk,
+	input wire [13:0] my_score,
+	input wire [13:0] op_score,
+	input wire [6:0] number_of_player,
     input wire [7:0] char_xy,
     output reg [6:0] char_code_out 
     );
@@ -33,66 +36,68 @@ module char_rom_wait(
 
     always @*
             case (char_xy)
-               8'h00: char_code = 7'h57; // W
-               8'h01: char_code = 7'h41; // A
-               8'h02: char_code = 7'h49; // I
-               8'h03: char_code = 7'h54; // T
-               8'h04: char_code = 7'h49; // I
-               8'h05: char_code = 7'h4e; // N
-               8'h06: char_code = 7'h47; // G
-               8'h07: char_code = 7'h2e; // .              8'h08: char_code = 7'h00; // 
-               8'h09: char_code = 7'h2e; // .
-               8'h0a: char_code = 7'h2e; // .
+               8'h00: char_code = 7'h53; // S
+               8'h01: char_code = 7'h43; // C
+               8'h02: char_code = 7'h4f; // O
+               8'h03: char_code = 7'h52; // R
+               8'h04: char_code = 7'h45; // E
+               8'h05: char_code = 7'h3a; // :
+               8'h06: char_code = 7'h00; //   
+               8'h07: char_code = 7'h00; //                8'h08: char_code = 7'h00; // 
+               8'h09: char_code = 7'h00; // 
+               8'h0a: char_code = 7'h00; // 
                8'h0b: char_code = 7'h00; // 
                8'h0c: char_code = 7'h00; // 
                8'h0d: char_code = 7'h00; //
                8'h0e: char_code = 7'h00; // 
                8'h0f: char_code = 7'h00; // 
 			//**************************************
-              8'h10: char_code = 7'h00; // 
-              8'h11: char_code = 7'h00; // 
-              8'h12: char_code = 7'h00; // 
-              8'h13: char_code = 7'h00; //               8'h14: char_code = 7'h00; // 
-              8'h15: char_code = 7'h00; // 
-              8'h16: char_code = 7'h00; // 
-              8'h17: char_code = 7'h00; // 
-              8'h18: char_code = 7'h00; // 
-              8'h19: char_code = 7'h00; // 
-              8'h1a: char_code = 7'h00; // 
-              8'h1b: char_code = 7'h00; //
-              8'h1c: char_code = 7'h00; // 
-              8'h1d: char_code = 7'h00; //  
-              8'h1e: char_code = 7'h00; // 
+              8'h10: char_code = 7'h50; // P
+              8'h11: char_code = 7'h6c; // l
+              8'h12: char_code = 7'h61; // a 
+              8'h13: char_code = 7'h79; // y             8'h14: char_code = 7'h00; // 
+              8'h14: char_code = 7'h65; // e 
+              8'h15: char_code = 7'h72; // r
+              8'h16: char_code = 7'h31; // 1
+              8'h17: char_code = 7'h3a; // :
+              8'h18: char_code = my_score[13:8]; // 
+              8'h19: char_code = my_score[6:0]; // 
+              8'h1a: char_code = 7'h00; //
+              8'h1b: char_code = 7'h00; // 
+              8'h1c: char_code = 7'h00; //  
+              8'h1d: char_code = 7'h00; // 
+			  8'h1e: char_code = 7'h00; //
               8'h1f: char_code = 7'h00; // 
 			//***************************************			  
-             8'h20: char_code = 7'h00; // 
-             8'h21: char_code = 7'h00; // 
-             8'h22: char_code = 7'h00; // 
-             8'h23: char_code = 7'h00; // 
-             8'h24: char_code = 7'h00; // 
-             8'h25: char_code = 7'h00; // 
-             8'h26: char_code = 7'h00; // 
-             8'h27: char_code = 7'h00; // 
-             8'h28: char_code = 7'h00; //              8'h29: char_code = 7'h00; // 
+             8'h20: char_code = 7'h50; // P
+             8'h21: char_code = 7'h6c; // l
+             8'h22: char_code = 7'h61; // a 
+             8'h23: char_code = 7'h79; // y
+             8'h24: char_code = 7'h65; // e 
+             8'h25: char_code = 7'h72; // r 
+             8'h26: char_code = 7'h32; // 2
+             8'h27: char_code = 7'h3a; // :
+             8'h28: char_code = op_score[13:8]; // e            8'h29: char_code = 7'h00; // 
+             8'h29: char_code = op_score[6:0]; // r
              8'h2a: char_code = 7'h00; // 
              8'h2b: char_code = 7'h00; // 
-             8'h2c: char_code = 7'h00; // 
-             8'h2d: char_code = 7'h00; // 
+             8'h2c: char_code = 7'h00; //
+			 8'h2d: char_code = 7'h00; //
              8'h2e: char_code = 7'h00; // 
              8'h2f: char_code = 7'h00; // 
 			//***************************************
-             8'h30: char_code = 7'h00; // 
-             8'h31: char_code = 7'h00; // 
-             8'h32: char_code = 7'h00; // 
-             8'h33: char_code = 7'h00; // 
-             8'h34: char_code = 7'h00; // 
-             8'h35: char_code = 7'h00; // 
-             8'h36: char_code = 7'h00; // 
-             8'h37: char_code = 7'h00; // 
-             8'h38: char_code = 7'h00; // 
-             8'h39: char_code = 7'h00; // 
-             8'h3a: char_code = 7'h00; // 
-             8'h3b: char_code = 7'h00; // 
+             8'h30: char_code = 7'h50; // P
+             8'h31: char_code = 7'h6c; // l
+             8'h32: char_code = 7'h61; // a
+             8'h33: char_code = 7'h79; // y
+             8'h34: char_code = 7'h65; // e
+             8'h35: char_code = 7'h72; // r
+             8'h36: char_code = 7'h3a; // :
+             8'h37: char_code = number_of_player; // 
+             8'h38: char_code = 7'h2d; // -
+             8'h39: char_code = 7'h77; // w
+             8'h3a: char_code = 7'h69; // i
+             8'h3b: char_code = 7'h6e; // n
              8'h3c: char_code = 7'h00; // 
              8'h3d: char_code = 7'h20; // 
              8'h3e: char_code = 7'h20; // 
@@ -232,11 +237,11 @@ module char_rom_wait(
              8'hbe: char_code = 7'h20; // 
              8'hbf: char_code = 7'h20; // 
 			//***************************************
-             8'hc0: char_code = 7'h20; // W
-             8'hc1: char_code = 7'h20; // Y
-             8'hc2: char_code = 7'h20; // N
-             8'hc3: char_code = 7'h20; // I
-             8'hc4: char_code = 7'h20; // K
+             8'hc0: char_code = 7'h57; // W
+             8'hc1: char_code = 7'h59; // Y
+             8'hc2: char_code = 7'h4e; // N
+             8'hc3: char_code = 7'h49; // I
+             8'hc4: char_code = 7'h4b; // K
              8'hc5: char_code = 7'h20; // 
              8'hc6: char_code = 7'h20; // 
              8'hc7: char_code = 7'h20; // 
@@ -249,33 +254,33 @@ module char_rom_wait(
              8'hce: char_code = 7'h20; // 
              8'hcf: char_code = 7'h20; //
 			//***************************************
-             8'hd0: char_code = 7'h20; // Z
-             8'hd1: char_code = 7'h20; // l
-             8'hd2: char_code = 7'h20; // a
-             8'hd3: char_code = 7'h20; // c
-             8'hd4: char_code = 7'h20; // z
-             8'hd5: char_code = 7'h20; // y
-             8'hd6: char_code = 7'h20; // m
+             8'hd0: char_code = 7'h5a; // Z
+             8'hd1: char_code = 7'h6c; // l
+             8'hd2: char_code = 7'h61; // a
+             8'hd3: char_code = 7'h63; // c
+             8'hd4: char_code = 7'h7a; // z
+             8'hd5: char_code = 7'h79; // y
+             8'hd6: char_code = 7'h6d; // m
              8'hd7: char_code = 7'h20; // 
-             8'hd8: char_code = 7'h20; // s
-             8'hd9: char_code = 7'h20; // i
-             8'hda: char_code = 7'h20; // e
+             8'hd8: char_code = 7'h73; // s
+             8'hd9: char_code = 7'h69; // i
+             8'hda: char_code = 7'h65; // e
              8'hdb: char_code = 7'h20; // 
              8'hdc: char_code = 7'h20; // 
              8'hdd: char_code = 7'h20; // 
              8'hde: char_code = 7'h20; // 
              8'hdf: char_code = 7'h20; // 
 			//***************************************
-             8'he0: char_code = 7'h20; // z
+             8'he0: char_code = 7'h5a; // z
              8'he1: char_code = 7'h20; // 
-             8'he2: char_code = 7'h20; // n
-             8'he3: char_code = 7'h20; // a
-             8'he4: char_code = 7'h20; // r
-             8'he5: char_code = 7'h20; // o
-             8'he6: char_code = 7'h20; // d
-             8'he7: char_code = 7'h20; // e
-             8'he8: char_code = 7'h20; // m
-             8'he9: char_code = 7'h20; // .
+             8'he2: char_code = 7'h6e; // n
+             8'he3: char_code = 7'h61; // a
+             8'he4: char_code = 7'h72; // r
+             8'he5: char_code = 7'h6f; // o
+             8'he6: char_code = 7'h64; // d
+             8'he7: char_code = 7'h65; // e
+             8'he8: char_code = 7'h6d; // m
+             8'he9: char_code = 7'h2e; // .
              8'hea: char_code = 7'h20; // 
              8'heb: char_code = 7'h20; // 
              8'hec: char_code = 7'h20; // 
@@ -283,22 +288,22 @@ module char_rom_wait(
              8'hee: char_code = 7'h20; //
              8'hef: char_code = 7'h20; // 
 			//***************************************
-             8'hf0: char_code = 7'h20; // ^
-             8'hf1: char_code = 7'h20; // ^
-             8'hf2: char_code = 7'h20; // ^
-             8'hf3: char_code = 7'h20; // ^
-             8'hf4: char_code = 7'h20; // ^
-             8'hf5: char_code = 7'h20; // ^
-             8'hf6: char_code = 7'h20; //^
-             8'hf7: char_code = 7'h20; // ^
-             8'hf8: char_code = 7'h20; // ^
-             8'hf9: char_code = 7'h20; // ^
-             8'hfa: char_code = 7'h20; // ^
-             8'hfb: char_code = 7'h20; // ^
-             8'hfc: char_code = 7'h20; // ^
-             8'hfd: char_code = 7'h20; // ^
-             8'hfe: char_code = 7'h20; // ^
-             8'hff: char_code = 7'h20; // ^
+             8'hf0: char_code = 7'h18; // ^
+             8'hf1: char_code = 7'h18; // ^
+             8'hf2: char_code = 7'h18; // ^
+             8'hf3: char_code = 7'h18; // ^
+             8'hf4: char_code = 7'h18; // ^
+             8'hf5: char_code = 7'h18; // ^
+             8'hf6: char_code = 7'h18; //^
+             8'hf7: char_code = 7'h18; // ^
+             8'hf8: char_code = 7'h18; // ^
+             8'hf9: char_code = 7'h18; // ^
+             8'hfa: char_code = 7'h18; // ^
+             8'hfb: char_code = 7'h18; // ^
+             8'hfc: char_code = 7'h18; // ^
+             8'hfd: char_code = 7'h18; // ^
+             8'hfe: char_code = 7'h18; // ^
+             8'hff: char_code = 7'h18; // ^
             endcase
    
     
