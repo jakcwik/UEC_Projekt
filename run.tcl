@@ -40,6 +40,9 @@ read_xdc {
     constraints/clk_wiz_0.xdc
     constraints/clk_wiz_0_late.xdc
     constraints/clk_wiz_0_ooc.xdc
+    constraints/clk_wiz_1.xdc
+    constraints/clk_wiz_1_late.xdc
+    constraints/clk_wiz_1_ooc.xdc
 }
 
 read_verilog {
@@ -49,6 +52,8 @@ read_verilog {
     rtl/draw_rect.v
     rtl/clk_wiz_0.v
     rtl/clk_wiz_0_clk_wiz.v
+    rtl/clk_wiz_1.v
+    rtl/clk_wiz_1_clk_wiz.v
     rtl/image_rom.v
     rtl/rst_d.v
     rtl/sync_delay.v
@@ -62,6 +67,7 @@ read_verilog {
     rtl/state_machine.v
     rtl/game_timer.v
     rtl/char_rom_score.v
+    rtl/MouseCtl_buf.v
 }
 
 read_vhdl {

@@ -23,17 +23,18 @@ module vga_timing (
 
 //LOCAL PARAMETERS
 //Horizontal
-localparam HOR_TOT_TIME = 1056;
-localparam HOR_BLNK_START = 800;
-localparam HOR_BLNK_TIME  = 256;
-localparam HOR_SYNC_START = 840; 
-localparam HOR_SYNC_TIME  = 128;
+
+localparam HOR_BLNK_START = 1024;
+localparam HOR_SYNC_START = 1048;
+localparam HOR_SYNC_TIME  = 136;
+localparam HOR_BLNK_TIME  = 304;
+localparam HOR_TOT_TIME = 1328;
 //Vertical
-localparam VER_TOT_TIME = 628;
-localparam VER_BLNK_START = 600; 
-localparam VER_BLNK_TIME  = 28;
-localparam VER_SYNC_START = 601;
-localparam VER_SYNC_TIME  = 4;
+localparam VER_TOT_TIME = 806;
+localparam VER_BLNK_START = 768; 
+localparam VER_BLNK_TIME  = 38;
+localparam VER_SYNC_START = 771;
+localparam VER_SYNC_TIME  = 6;
 
 //Next state registers
 reg [10:0] hcount_nxt, vcount_nxt;

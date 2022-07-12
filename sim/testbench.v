@@ -52,8 +52,8 @@ module testbench;
     .g({g,g}), // fabricate an 8-bit value
     .b({b,b}), // fabricate an 8-bit value
     .go(vs),
-    .xdim(16'd1056),
-    .ydim(16'd628)
+    .xdim(16'd1328),
+    .ydim(16'd806)
   );
   
 

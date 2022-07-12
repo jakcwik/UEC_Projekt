@@ -28,13 +28,14 @@ module vga_example (
   wire pclk, mclk;
   wire rst_d;
  
-  clk_wiz_0 my_clk_wiz_0(
+  clk_wiz_1 my_clk_wiz_0(
     .clk(clk),
-    .clk40MHz(pclk),
+    .clk75MHz(pclk),
     .clk100MHz(mclk),
     .reset(rst),
     .locked(locked)
   );
+
   
   rst_d my_rst_d (
 	.rst_d(rst_d),
@@ -162,14 +163,15 @@ module vga_example (
 
 //MOUSE
 
-  MouseCtl my_MouseCtl (
+  MouseCtl_buf my_MouseCtl_buf (
 	.ps2_clk(ps2_clk),
 	.ps2_data(ps2_data),
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
-	.left(mouse_left_out_mouse),
+	.mouse_left(mouse_left_out_mouse),
 	.rst(rst_d),
-	.clk(mclk)
+	.mclk(mclk),
+	.pclk(pclk)
   );
 
   cursor_sync my_cursor_sync (
