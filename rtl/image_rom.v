@@ -14,7 +14,7 @@ module image_rom (
 
 reg [11:0] rom [0:4095];
 
-initial $readmemh("../rom/kaczka.data", rom); 
+initial $readmemh("C:/Users/jakub/Documents/UEC/datafiles/kaczka.data", rom); 
 
 always @(posedge clk)
     rgb <= rom[address];

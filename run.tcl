@@ -46,28 +46,34 @@ read_xdc {
 }
 
 read_verilog {
-    rtl/vga_example.v
-    rtl/vga_timing.v
-    rtl/draw_background.v
-    rtl/draw_rect.v
-    rtl/clk_wiz_0.v
-    rtl/clk_wiz_0_clk_wiz.v
     rtl/clk_wiz_1.v
     rtl/clk_wiz_1_clk_wiz.v
-    rtl/image_rom.v
     rtl/rst_d.v
-    rtl/sync_delay.v
+
+    rtl/vga_example.v
+    rtl/vga_timing.v
+
+    rtl/draw_background.v
+    rtl/draw_rect.v
     rtl/draw_rect_ctl.v 
     rtl/draw_rect_char.v
+    rtl/image_rom.v
+
+    rtl/sync_delay.v
+    rtl/sync_after_image.v
+    
+    rtl/image_rom.v
     rtl/font_rom.v
     rtl/char_rom_play.v
     rtl/char_rom_wait.v
+    rtl/char_rom_score.v
+
     rtl/cursor_sync.v
     rtl/click_ctl.v
+    rtl/MouseCtl_buf.v
+
     rtl/state_machine.v
     rtl/game_timer.v
-    rtl/char_rom_score.v
-    rtl/MouseCtl_buf.v
     rtl/ran_num_gen.v
 }
 

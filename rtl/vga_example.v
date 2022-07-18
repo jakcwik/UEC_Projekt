@@ -92,6 +92,7 @@ module vga_example (
 	.mouse_clicked_stop(mouse_clicked_stop),
 	.rgb_out_rc_play(rgb_out_rc_play),
 	.rgb_out_rc_wait(rgb_out_rc_wait),
+	.rgb_out_dr_game(rgb_out_dr),
 	.rgb_out_rc_score(rgb_out_rc_score),
 	//outputs
 	.idle_height_play(idle_height_play),
@@ -100,7 +101,8 @@ module vga_example (
 	.hstart_click_play(hstart_click_play),
 	.hlength_click_play(hlength_click_play),
 	.vlength_click_play(vlength_click_play),
-	.rgb_out_rc(rgb_out_rc)
+	.rgb_out_rc(rgb_out_rc),
+	.state(state)
   
   );
  
@@ -291,6 +293,64 @@ module vga_example (
    
 // STATE GAME
 
+   ran_num_gen my_ran_num_gen(
+    .clk(pclk),
+	.rst(rst_d),
+	.state(state),
+	.hor_data(hor_ran_number),
+	.ver_data(ver_ran_number)
+   );
+
+  draw_rect duck_image (
+	//inputs
+	.vcount_in(vcount_out_bg),
+  	.hcount_in(hcount_out_bg),
+	.rgb_in(rgb_out_bg),
+	.xpos({2'b00,hor_ran_number}),
+	.ypos({2'b00,ver_ran_number}),
+	.rgb_pixel(rgb_pixel),
+	.vsync_in(vsync_out_bg),
+	.vblnk_in(vblnk_out_bg),
+	.hsync_in(hsync_out_bg),
+	.hblnk_in(hblnk_out_bg),
+	//outputs
+	.vcount_out(vcount_out_dr),
+	.hcount_out(hcount_out_dr),
+	.rgb_out(rgb_out_dr),
+	.pixel_addr(pixel_addr),
+	.vsync_out(vs_out_dr),
+	.vblnk_out(vblnk_out_dr),
+	.hsync_out(hs_out_dr),
+	.hblnk_out(hblnk_out_dr),
+	//others
+	.rst(rst_d),
+	.pclk(pclk)
+   );
+   image_rom my_image_rom(
+	 .clk(pclk),
+	 .rst(rst_d),
+	 .address(pixel_addr),
+	 .rgb(rgb_pixel)
+   );
+   
+    sync_after_image my_sync_after_image(
+	 .pclk(pclk),
+	 .rst(rst_d),
+	 .vs_in(vs_out_dr),
+	 .hs_in(hs_out_dr),
+	 .hcount_in(hcount_out_dr),
+	 .vcount_in(vcount_out_dr),
+	 .vblnk_in(vblnk_out_dr),
+	 .hblnk_in(hblnk_out_dr),
+	 .hs_out(hs_out_rc),
+	 .vs_out(vs_out_rc),
+	 .hcount(hcount_out_rc),
+	 .vcount(vcount_out_rc),
+	 .vblnk(vblnk_out_rc),
+	 .hblnk(hblnk_out_rc)
+   );
+   
+   
 // STATE SCORE
    
   draw_rect_char score_rect_char (
@@ -337,10 +397,5 @@ module vga_example (
 	.number_of_player(7'h32)
    );
    
-   ran_num_gen my_ran_num_gen(
-    .clk(pclk),
-	.rst(rst_d),
-	.hor_data(hor_ran_number),
-	.ver_data(ver_ran_number)
-   );
+
 endmodule

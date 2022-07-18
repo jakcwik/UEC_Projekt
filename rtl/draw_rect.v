@@ -45,9 +45,9 @@ localparam RECT_HEIGHT = 64;
 localparam RECT_COLOR  = 12'hd_d_9;
 
 always@*
-    if ((hcount_d2>= xpos) && (hcount_d2< xpos + RECT_WIDTH) && (vcount_d2 >= ypos) && (vcount_d2 < ypos + RECT_HEIGHT) && (rgb_pixel == 3'h000))
+    if ((hcount_d2>= xpos) && (hcount_d2< xpos + RECT_WIDTH) && (vcount_d2 >= ypos) && (vcount_d2 < ypos + RECT_HEIGHT) && (rgb_pixel != 12'hfff))
 		begin
-		rgb_nxt = 12'h0_f_0;
+		rgb_nxt = rgb_pixel;
 		addry = vcount_in - ypos;
 		addrx = hcount_in - xpos;
 		end
@@ -89,6 +89,7 @@ always @(posedge pclk)
 		vsync_out  <= 0;
 		vblnk_out  <= 0;
 		rgb_out    <= 0;
+		pixel_addr <= 0;
 	end
 	else begin
 		hcount_out <= hcount_d2;
@@ -98,7 +99,7 @@ always @(posedge pclk)
 		vsync_out  <= vsync_d2;
 		vblnk_out  <= vblnk_d2;
 		rgb_out    <= rgb_nxt;
-		pixel_addr <= {addry[5:0], addrx[5:0]};
+		pixel_addr <= {addry[5:0], addrx[5:0]} + 1;
 	end
 
 

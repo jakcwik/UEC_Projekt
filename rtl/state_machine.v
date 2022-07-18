@@ -7,6 +7,7 @@ input wire uart_start,
 input wire mouse_clicked_stop,
 input wire [11:0] rgb_out_rc_play,
 input wire [11:0] rgb_out_rc_wait,
+input wire [11:0] rgb_out_dr_game,
 input wire [11:0] rgb_out_rc_score,
 output reg [11:0] idle_height_play,
 output reg [10:0] vstart_click_play,
@@ -26,18 +27,19 @@ reg[10:0]  hstart_click_play_nxt, vstart_click_play_nxt, hlength_click_play_nxt,
 
 wire game_timer;
 
-parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11;
+parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11, GAME_TIME = 60;
 
   game_timer my_game_timer(
   .clk(pclk),
   .rst(rst_d),
+  .time_in(GAME_TIME),
   .state_in(state),
   .end_of_time(game_timer)
   );
 
 always@* begin
 	if (rst_d) begin
-		state_nxt = SCORE;
+		state_nxt = GAME;
 	end
 	else
 		case (state)
@@ -75,11 +77,11 @@ always@* begin
 				end
 			GAME:
 				if (game_timer == 0)
-					state_nxt = SCORE;
-				else if(mouse_clicked_stop)
-					state_nxt = IDLE;
-				else
-					state_nxt = IDLE;
+					state_nxt = GAME;
+				else begin
+					state_nxt = GAME;
+					rgb_out_rc_nxt = rgb_out_dr_game;
+				end
 			SCORE:
 				if(mouse_clicked_stop)
 					state_nxt = IDLE;
@@ -94,13 +96,13 @@ always@* begin
 
 always @ (posedge pclk) begin
 	if (rst_d) begin
-		state <= SCORE;
+		state <= GAME;
 	end
 	else
 		case (state)
 			IDLE:
 				begin
-					state <= state_nxt;
+					state			   <= state_nxt;
 					idle_height_play   <= idle_height_play_nxt;
 					vstart_click_play  <= vstart_click_play_nxt;
 					idle_width_play    <= idle_width_play_nxt;
@@ -111,18 +113,19 @@ always @ (posedge pclk) begin
 				end
 			WAIT:
 				begin
-					state <= state_nxt;
+					state 			   <= state_nxt;
 					rgb_out_rc         <= rgb_out_rc_nxt;
 					idle_height_play   <= idle_height_play_nxt;
 					idle_width_play    <= idle_width_play_nxt;
 				end
 			GAME:
 				begin
-					state <= state_nxt;
+					state			   <= state_nxt;
+					rgb_out_rc         <= rgb_out_rc_nxt;
 				end
 			SCORE:
 				begin
-					state <= state;
+					state			   <= state_nxt;
 					rgb_out_rc         <= rgb_out_rc_nxt;
 					idle_height_play   <= idle_height_play_nxt;
 					idle_width_play    <= idle_width_play_nxt;
