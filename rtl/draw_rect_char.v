@@ -14,6 +14,7 @@ module draw_rect_char (
   input wire [10:0] vcount_in,
   input wire [10:0] hcount_in,
   input wire [11:0] rgb_in,
+  input wire [11:0] text_color,
   input wire [7:0] char_pixels,
   input wire vsync_in,
   input wire vblnk_in,
@@ -46,7 +47,6 @@ reg hsync_d, vsync_d, hblnk_d, vblnk_d, hsync_d2, vsync_d2, hblnk_d2, vblnk_d2, 
 localparam RECT_WIDTH  = 128;
 localparam RECT_HEIGHT = 64;
 
-localparam TEXT_COLOR = 12'hf00;
 
 
 always@* begin
@@ -77,7 +77,7 @@ always@* begin
 	//dane po opóźnieniu - wyświetlanie tekstu
 	if ((hcount_d3>= width_start) && (hcount_d3 < width_start + RECT_WIDTH) && (vcount_d3 >= height_start) && (vcount_d3 < height_start + RECT_HEIGHT))begin
 		if (char_pixels_d[3'b111-hcount_in[2:0]] != 0) begin
-			rgb_nxt = TEXT_COLOR;
+			rgb_nxt = text_color;
 		end
 		else begin
 			rgb_nxt = rgb_d3;

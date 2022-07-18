@@ -40,7 +40,7 @@ reg hsync_d, vsync_d, hblnk_d, vblnk_d, hsync_d2, vsync_d2, hblnk_d2, vblnk_d2;
 reg [10:0] hcount_d, vcount_d, hcount_d2, vcount_d2;
 
 //LOCAL PARAMETERS
-localparam RECT_WIDTH  = 48;
+localparam RECT_WIDTH  = 64;
 localparam RECT_HEIGHT = 64;
 localparam RECT_COLOR  = 12'hd_d_9;
 

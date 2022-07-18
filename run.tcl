@@ -68,6 +68,7 @@ read_verilog {
     rtl/game_timer.v
     rtl/char_rom_score.v
     rtl/MouseCtl_buf.v
+    rtl/ran_num_gen.v
 }
 
 read_vhdl {

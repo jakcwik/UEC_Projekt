@@ -77,6 +77,9 @@ module vga_example (
   wire [15:0] my_score, op_score;
   wire [1:0] state;
   
+  wire[9:0] hor_ran_number;
+  wire[9:0] ver_ran_number;
+  
 
 //ALL STATES
 
@@ -214,6 +217,7 @@ module vga_example (
 	.char_pixels(char_pixels_play),
 	.width_start(idle_width_play),
 	.height_start(idle_height_play),
+	.text_color(12'hf00),
 	//outputs
 	.hcount_out(hcount_out_rc),
 	.hsync_out(hs_out_rc),
@@ -256,6 +260,7 @@ module vga_example (
 	.char_pixels(char_pixels_wait),
 	.width_start(idle_width_play),
 	.height_start(idle_height_play),
+	.text_color(12'h0f0),
 	//outputs
 	.hcount_out(hcount_out_rc),
 	.hsync_out(hs_out_rc),
@@ -300,6 +305,7 @@ module vga_example (
 	.char_pixels(char_pixels_score),
 	.width_start(idle_width_play),
 	.height_start(idle_height_play),
+	.text_color(12'h00f),
 	//outputs
 	.hcount_out(hcount_out_rc),
 	.hsync_out(hs_out_rc),
@@ -331,5 +337,10 @@ module vga_example (
 	.number_of_player(7'h32)
    );
    
-   
+   ran_num_gen my_ran_num_gen(
+    .clk(pclk),
+	.rst(rst_d),
+	.hor_data(hor_ran_number),
+	.ver_data(ver_ran_number)
+   );
 endmodule
