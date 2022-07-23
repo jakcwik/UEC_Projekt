@@ -2,9 +2,9 @@
 //Module acquires which state is game in. If player enters GAME state it starts to measure
 //time and after parametrized amout of time it sends signal to main module in order to enter 
 //SCORE state.
-//Exiting GAME state depends on this module. 
+//Exiting STATE GAME depends on this module. 
 
-//100MHz CLK ASSUMED; T=10ns
+//75MHz CLK ASSUMED
 
 `timescale 1ns / 1ps
 
@@ -20,7 +20,7 @@ module game_timer(
 localparam  GAME = 2'b10;  
 
 reg end_of_time_nxt;
-reg [16:0] T_counter, T_counter_nxt;       //2^16 = 131071 > 100k
+reg [16:0] T_counter, T_counter_nxt;       //2^16 = 131071 > 75k  
 reg [9:0] ms_counter, ms_counter_nxt;      
 reg [7:0] s_counter, s_counter_nxt;        //max 255
 
@@ -35,7 +35,7 @@ always@* begin
 		if(end_of_time == 1'b1) begin
 			end_of_time_nxt = 1'b0;
 		end
-        else if(T_counter == 100000) begin
+        else if(T_counter == 75000) begin
             T_counter_nxt = 0;
             ms_counter_nxt = ms_counter + 1;
 			s_counter_nxt = s_counter;
