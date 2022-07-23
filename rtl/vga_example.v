@@ -74,7 +74,7 @@ module vga_example (
   wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc, vblnk_out;
   wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc, hblnk_out;
   wire mouse_left, mouse_left_out_mouse;
-  wire rect_clicked_play,mouse_clicked_stop, uart_start;
+  wire rect_clicked_play, rect_clicked_duck, mouse_clicked_stop, uart_start;
  
 
   
@@ -304,7 +304,22 @@ module vga_example (
 	.hor_data(hor_ran_number),
 	.ver_data(ver_ran_number)
    );
-
+/*  
+  click_image_ctl click_duck_image(
+  .rgb_in(rgb_out_dr),
+  .mouse_left(mouse_left),
+  .rect_clicked(rect_clicked_duck),
+  .rst(rst_d),
+  .pclk(pclk)
+  );
+ 
+  score_counter my_score_counter(
+  .clicked_duck(rect_clicked_duck),
+  .score(),      							 <- wynik musi iść do modułu ASCII !!!
+  .rst(rst_d),
+  .pclk(pclk)
+  );
+ */ 
   draw_rect duck_image (
 	//inputs
 	.vcount_in(vcount_out_bg),
@@ -395,10 +410,12 @@ module vga_example (
     .clk(pclk),
 	.char_xy(char_xy_score),
 	.char_code_out(char_code_score),
-	.my_score(14'h3132),
-	.op_score(14'h3334),
-	.number_of_player(7'h32)
-   );
+	.my_score_ASCII_1(7'h31),                  //kody ASCII - 7 bitów
+	.my_score_ASCII_0(7'h31),				  //1 - cyfra dziesiątek
+	.op_score_ASCII_1(7'h33),				  //0 - cyfra jedności
+	.op_score_ASCII_0(7'h31),
+	.number_of_player(7'h32)    // do napisania: moduł do porównania wyników obu graczy
+   );							//(z uwagi na tylko dwóch graczy wystarczy zwykłe porównanie bez konwersji do ascii)
    
 
 endmodule
