@@ -53,32 +53,32 @@ module vga_example (
     .S(1'b0)
   );
 
- 
+  wire [15:0] my_score, op_score;
   wire [11:0] rgb_out_bg, rgb_out_dr; 
   wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play, rgb_out_rc_score;
   wire [11:0] pixel_addr, rgb_pixel;
   wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
-  wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc;
-  wire [10:0] hcount, hcount_out_bg, hcount_out_dr, hcount_out_rc;
+  wire [11:0] idle_height_play, idle_width_play;
+  wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc, vcount_out;
+  wire [10:0] hcount, hcount_out_bg, hcount_out_dr, hcount_out_rc, hcount_out;
+  wire [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
   wire [10:0] char_addr;
-  wire [7:0] char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
-  wire [6:0] char_code_play, char_code_wait, char_code_score;
-  wire [3:0] char_line_play, char_line_wait, char_line_score;
+  wire [9:0]  hor_ran_number;
+  wire [9:0]  ver_ran_number;
+  wire [7:0]  char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
+  wire [6:0]  char_code_play, char_code_wait, char_code_score;
+  wire [3:0]  char_line_play, char_line_wait, char_line_score;
+  wire [1:0]  state;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
   wire hsync, hsync_out_bg, hs_out_dr, hs_out_rc;
-  wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc;
-  wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc;
+  wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc, vblnk_out;
+  wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc, hblnk_out;
   wire mouse_left, mouse_left_out_mouse;
+  wire rect_clicked_play,mouse_clicked_stop, uart_start;
+ 
 
   
-  wire [11:0] idle_height_play, idle_width_play;
-  wire [10:0] hstart_click_play, vstart_click_play, hlength_click_play, vlength_click_play;
-  wire rect_clicked_play,mouse_clicked_stop, uart_start;
-  wire [15:0] my_score, op_score;
-  wire [1:0] state;
-  
-  wire[9:0] hor_ran_number;
-  wire[9:0] ver_ran_number;
+
   
 
 //ALL STATES
@@ -136,7 +136,7 @@ module vga_example (
 	.vsync_out(vsync_out_bg),
 	.vblnk_out(vblnk_out_bg),
 	.rgb_out(rgb_out_bg),
-	//others
+	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
   );
@@ -157,12 +157,15 @@ module vga_example (
 	.vs_out(vs),
 	.hs_out(hs),
     //outputs from draw_rect
+	.hcount_out(hcount_out),
+	.vcount_out(vcount_out),
+	.hblnk_out(hblnk_out),
+	.vblnk_out(vblnk_out),
     .r(r),
     .g(g),
     .b(b),
 	//clock and reset
 	.rst(rst_d),
-	.mclk(mclk),
 	.pclk(pclk)
   );
 
@@ -174,6 +177,7 @@ module vga_example (
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
 	.mouse_left(mouse_left_out_mouse),
+	//clock and reset
 	.rst(rst_d),
 	.mclk(mclk),
 	.pclk(pclk)
@@ -186,6 +190,7 @@ module vga_example (
 	.xpos_out(xpos),
 	.ypos_out(ypos),
 	.left_out(mouse_left),
+	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
   );
@@ -221,17 +226,16 @@ module vga_example (
 	.height_start(idle_height_play),
 	.text_color(12'hf00),
 	//outputs
-	.hcount_out(hcount_out_rc),
-	.hsync_out(hs_out_rc),
-	.hblnk_out(hblnk_out_rc),
-	.vcount_out(vcount_out_rc),
-	.vsync_out(vs_out_rc),
-	.vblnk_out(vblnk_out_rc),
+	.hcount_out(),
+	.hsync_out(),
+	.hblnk_out(),
+	.vcount_out(),
+	.vsync_out(),
+	.vblnk_out(),
 	.rgb_out(rgb_out_rc_play),
-	//.addr(char_addr),
 	.char_xy(char_xy_play),
 	.char_line(char_line_play),
-	//others
+	////clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
   );
@@ -264,17 +268,17 @@ module vga_example (
 	.height_start(idle_height_play),
 	.text_color(12'h0f0),
 	//outputs
-	.hcount_out(hcount_out_rc),
-	.hsync_out(hs_out_rc),
-	.hblnk_out(hblnk_out_rc),
-	.vcount_out(vcount_out_rc),
-	.vsync_out(vs_out_rc),
-	.vblnk_out(vblnk_out_rc),
+	.hcount_out(),
+	.hsync_out(),
+	.hblnk_out(),
+	.vcount_out(),
+	.vsync_out(),
+	.vblnk_out(),
 	.rgb_out(rgb_out_rc_wait),
 	//.addr(char_addr),
 	.char_xy(char_xy_wait),
 	.char_line(char_line_wait),
-	//others
+	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
   );
@@ -322,13 +326,12 @@ module vga_example (
 	.vblnk_out(vblnk_out_dr),
 	.hsync_out(hs_out_dr),
 	.hblnk_out(hblnk_out_dr),
-	//others
+	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
    );
    image_rom my_image_rom(
 	 .clk(pclk),
-	 .rst(rst_d),
 	 .address(pixel_addr),
 	 .rgb(rgb_pixel)
    );
@@ -367,17 +370,17 @@ module vga_example (
 	.height_start(idle_height_play),
 	.text_color(12'h00f),
 	//outputs
-	.hcount_out(hcount_out_rc),
-	.hsync_out(hs_out_rc),
-	.hblnk_out(hblnk_out_rc),
-	.vcount_out(vcount_out_rc),
-	.vsync_out(vs_out_rc),
-	.vblnk_out(vblnk_out_rc),
+	.hcount_out(),
+	.hsync_out(),
+	.hblnk_out(),
+	.vcount_out(),
+	.vsync_out(),
+	.vblnk_out(),
 	.rgb_out(rgb_out_rc_score),
 	//.addr(char_addr),
 	.char_xy(char_xy_score),
 	.char_line(char_line_score),
-	//others
+	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
   );

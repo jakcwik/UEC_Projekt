@@ -19,18 +19,18 @@ module sync_delay (
   output reg [3:0] r,
   output reg [3:0] g,
   output reg [3:0] b,
-  output reg vs_out,
-  output reg hs_out,
+  output wire [10:0] hcount_out, vcount_out,
+  output wire hblnk_out, vblnk_out,
+  output wire vs_out,
+  output wire hs_out,
   //clock and reset
-  input wire mclk,
   input wire pclk,
   input wire rst
   );
   
   
 //next state registers and wires
-reg vs_d, hs_d;
-wire [3:0] r_out,g_out,b_out;
+wire vs_d, hs_d;
 wire [11:0] pixel_addr_s, rgb_pixel_s;
 wire [11:0] rgb_out;
 
@@ -47,12 +47,12 @@ wire [11:0] rgb_out;
 	.xpos(xpos),
 	.ypos(ypos),
 	//outputs
-	.hcount_out(),
-	.hsync_out(),
-	.hblnk_out(),
-	.vcount_out(),
-	.vsync_out(),
-	.vblnk_out(),
+	.hcount_out(hcount_out),
+	.hsync_out(hs_out),
+	.hblnk_out(hblnk_out),
+	.vcount_out(vcount_out),
+	.vsync_out(vs_out),
+	.vblnk_out(vblnk_out),
 	.rgb_out(rgb_out),
 	.pixel_addr(pixel_addr_s),
 	//others
@@ -62,7 +62,6 @@ wire [11:0] rgb_out;
   
    image_rom my_image_rom (
     .clk(pclk),
-	.rst(rst),
 	.address(pixel_addr_s),
 	.rgb(rgb_pixel_s)
   );
@@ -88,22 +87,14 @@ wire [11:0] rgb_out;
 */
 
 
-always @(posedge pclk) begin
-		vs_d  <= vs_in;
-		hs_d  <= hs_in;
-	end
 
 always @(posedge pclk)
 	if(rst) begin
-		vs_out  <=0;
-		hs_out  <=0;
-		/*r		<=0;
+		r		<=0;
 		g		<=0;
-		b		<=0;	*/
+		b		<=0;	
 	end
 	else begin
-		vs_out	<=vs_d;
-		hs_out  <=hs_d;
 		r		<=rgb_out[11:8];
 		g		<=rgb_out[7:4];
 		b		<=rgb_out[3:0];

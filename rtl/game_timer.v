@@ -29,10 +29,9 @@ always@* begin
 		T_counter_nxt = 0;
         ms_counter_nxt = 0;
 		s_counter_nxt = 0;
-		end_of_time_nxt = 0;
+		end_of_time_nxt = 0'b0;
 	end
     else if(state_in == GAME) begin        
-    T_counter_nxt = T_counter + 1;
 		if(end_of_time == 1'b1) begin
 			end_of_time_nxt = 1'b0;
 		end
@@ -54,6 +53,12 @@ always@* begin
             s_counter_nxt = 0;
             end_of_time_nxt = 1'b1;
         end
+		else begin
+			T_counter_nxt = T_counter + 1;
+			ms_counter_nxt = ms_counter_nxt;
+			s_counter_nxt = s_counter_nxt;
+			end_of_time_nxt = end_of_time_nxt;
+		end
     end
 	else begin
 		T_counter_nxt = 0;

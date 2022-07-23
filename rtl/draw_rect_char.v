@@ -35,7 +35,7 @@ module draw_rect_char (
   input wire rst
   );
 
-reg [11:0] rgb_nxt, rgb_d, rgb_d2, rgb_d3, rgb_d4;
+reg [11:0] rgb_nxt, rgb_nxt_d, rgb_nxt_d2, rgb_d, rgb_d2, rgb_d3, rgb_d4;
 reg [10:0] hcount_d, vcount_d, hcount_d2, vcount_d2, hcount_d3, vcount_d3,  hcount_d4, vcount_d4;
 reg [7:0] char_xy_nxt, char_xy_d, char_pixels_d;
 reg [3:0] char_line_nxt, char_line_d;
@@ -100,6 +100,7 @@ always @(posedge pclk)begin
 		char_xy_d<= char_xy_nxt;
 		char_line_d <= char_line_nxt;
 		char_pixels_d <= char_pixels;
+		rgb_nxt_d <= rgb_nxt;
 	end
 	
 always @(posedge pclk)begin
@@ -110,6 +111,7 @@ always @(posedge pclk)begin
 		vsync_d2  <= vsync_d;
 		vblnk_d2  <= vblnk_d;
 		rgb_d2    <= rgb_d;
+		rgb_nxt_d2 <= rgb_nxt_d;
 	end
 	
 

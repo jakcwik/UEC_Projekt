@@ -5,13 +5,13 @@ module MouseCtl_buf (
   input wire pclk,
   input wire mclk,
   input wire rst, 
-  output wire vs,
   output reg mouse_left,
   output reg [11:0] xpos,
   output reg [11:0] ypos
   );
   
-  
+  wire [11:0] xpos_out_mouse, ypos_out_mouse;
+  wire mouse_left_nxt;
   
   MouseCtl my_MouseCtl (
 	.ps2_clk(ps2_clk),

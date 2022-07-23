@@ -20,7 +20,7 @@ output reg [1:0] state
 );
 
 
-reg[1:0] state, state_nxt;
+reg[1:0] state_nxt;
 reg[11:0]  rgb_out_rc_nxt;
 reg[11:0]  idle_height_play_nxt, idle_width_play_nxt;
 reg[10:0]  hstart_click_play_nxt, vstart_click_play_nxt, hlength_click_play_nxt, vlength_click_play_nxt;
@@ -76,8 +76,10 @@ always@* begin
 					idle_width_play_nxt    = 380;
 				end
 			GAME:
-				if (game_timer == 0)
+				if (game_timer == 0) begin
 					state_nxt = GAME;
+					rgb_out_rc_nxt = rgb_out_dr_game;
+				end
 				else begin
 					state_nxt = GAME;
 					rgb_out_rc_nxt = rgb_out_dr_game;
@@ -91,6 +93,8 @@ always@* begin
 					idle_height_play_nxt   = 186;
 					idle_width_play_nxt    = 380;
 				end
+			default:
+				state_nxt =IDLE;
 		endcase
 	end
 

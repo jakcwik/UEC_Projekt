@@ -5,8 +5,7 @@
 // The output 'rgb' is 12-bit number with concatenated
 // red, green and blue color values (4-bit each)
 module image_rom (
-    input wire clk ,
-	input wire rst,
+    input wire clk,
     input wire [11:0] address,  // address = {addry[5:0], addrx[5:0]}
     output reg [11:0] rgb
 );

@@ -34,7 +34,7 @@ module draw_rect (
   );
 
 //Next state registers
-reg [11:0] rgb_nxt, rgb_nxt_d, rgb_nxt_d2;
+reg [11:0] rgb_nxt, rgb_nxt_d, rgb_d, rgb_d2;
 reg [10:0] addrx, addry;
 reg hsync_d, vsync_d, hblnk_d, vblnk_d, hsync_d2, vsync_d2, hblnk_d2, vblnk_d2;
 reg [10:0] hcount_d, vcount_d, hcount_d2, vcount_d2;
@@ -52,7 +52,7 @@ always@*
 		addrx = hcount_in - xpos;
 		end
     else begin
-		rgb_nxt = rgb_nxt_d2;
+		rgb_nxt = rgb_d2;
 		addry = vcount_in - ypos;
 		addrx = hcount_in - xpos;
 		end
@@ -65,7 +65,8 @@ always @(posedge pclk)begin
 		vcount_d <= vcount_in;
 		vsync_d  <= vsync_in;
 		vblnk_d  <= vblnk_in;
-		rgb_nxt_d <= rgb_in;
+		rgb_d <= rgb_in;
+		rgb_nxt_d <=rgb_nxt;
 	end
 	
 	always @(posedge pclk)begin
@@ -75,7 +76,7 @@ always @(posedge pclk)begin
 		vcount_d2 <= vcount_d;
 		vsync_d2  <= vsync_d;
 		vblnk_d2  <= vblnk_d;
-		rgb_nxt_d2 <= rgb_nxt_d;
+		rgb_d2 <= rgb_d;
 	end
 	
 
@@ -98,7 +99,7 @@ always @(posedge pclk)
 		vcount_out <= vcount_d2;
 		vsync_out  <= vsync_d2;
 		vblnk_out  <= vblnk_d2;
-		rgb_out    <= rgb_nxt;
+		rgb_out    <= rgb_nxt_d;
 		pixel_addr <= {addry[5:0], addrx[5:0]} + 1;
 	end
 
