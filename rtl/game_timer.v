@@ -11,6 +11,7 @@
 module game_timer(
     input wire clk, rst,  
 	input wire time_in,
+	input wire clicked_duck,
     //from game
     input wire [1:0] state_in,      
     //to game
@@ -23,6 +24,8 @@ reg end_of_time_nxt;
 reg [16:0] T_counter, T_counter_nxt;       //2^16 = 131071 > 75k  
 reg [9:0] ms_counter, ms_counter_nxt;      
 reg [7:0] s_counter, s_counter_nxt;        //max 255
+
+
 
 always@* begin
 	if(rst) begin
@@ -69,7 +72,7 @@ always@* begin
 end
 
 always@(posedge clk) begin
-    if(rst) begin
+    if(rst || clicked_duck) begin
         end_of_time <= 1'b0;
         T_counter <= 0;
         ms_counter <= 0;

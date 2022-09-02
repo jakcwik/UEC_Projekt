@@ -65,6 +65,7 @@ module vga_example (
   wire [10:0] char_addr;
   wire [9:0]  hor_ran_number;
   wire [9:0]  ver_ran_number;
+  wire [7:0]  score;
   wire [7:0]  char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
   wire [6:0]  char_code_play, char_code_wait, char_code_score;
   wire [3:0]  char_line_play, char_line_wait, char_line_score;
@@ -301,25 +302,30 @@ module vga_example (
     .clk(pclk),
 	.rst(rst_d),
 	.state(state),
+	.clicked_duck(rect_clicked_duck),
 	.hor_data(hor_ran_number),
 	.ver_data(ver_ran_number)
    );
-/*  
+ 
   click_image_ctl click_duck_image(
+  .xpos_mouse(xpos),
+  .ypos_mouse(ypos),
+  .hcount_in(hcount_out_dr),
+  .vcount_in(vcount_out_dr),
   .rgb_in(rgb_out_dr),
   .mouse_left(mouse_left),
   .rect_clicked(rect_clicked_duck),
   .rst(rst_d),
   .pclk(pclk)
   );
- 
+
   score_counter my_score_counter(
   .clicked_duck(rect_clicked_duck),
-  .score(),      							 <- wynik musi iść do modułu ASCII !!!
+  .score(score),      							// <- wynik musi iść do modułu ASCII !!!
   .rst(rst_d),
-  .pclk(pclk)
+  .clk(pclk)
   );
- */ 
+
   draw_rect duck_image (
 	//inputs
 	.vcount_in(vcount_out_bg),

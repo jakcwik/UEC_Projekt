@@ -70,11 +70,13 @@ read_verilog {
 
     rtl/cursor_sync.v
     rtl/click_ctl.v
+    rtl/click_image_ctl.v
     rtl/MouseCtl_buf.v
 
     rtl/state_machine.v
     rtl/game_timer.v
     rtl/ran_num_gen.v
+    rtl/score_counter.v
 }
 
 read_vhdl {

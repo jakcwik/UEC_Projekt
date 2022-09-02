@@ -34,7 +34,8 @@ parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11, GAME_TIME = 6
   .rst(rst_d),
   .time_in(GAME_TIME),
   .state_in(state),
-  .end_of_time(game_timer)
+  .end_of_time(game_timer),
+  .clicked_duck(1'b0)
   );
 
 always@* begin

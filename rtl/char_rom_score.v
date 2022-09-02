@@ -25,7 +25,7 @@ module char_rom_score(
 	input wire [13:0] my_score_ASCII_1,
 	input wire [13:0] my_score_ASCII_0,
 	input wire [13:0] op_score_ASCII_1,
-	input wire [13:0] op_score_ASCII_1,
+	input wire [13:0] op_score_ASCII_0,
 	input wire [6:0] number_of_player,
     input wire [7:0] char_xy,
     output reg [6:0] char_code_out 

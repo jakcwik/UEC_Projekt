@@ -2,6 +2,7 @@
 module ran_num_gen(
     input             clk,
     input             rst,
+	input             clicked_duck,
 	input [1:0]		  state,
     output reg [9:0] hor_data,
 	output reg [9:0] ver_data
@@ -22,6 +23,7 @@ localparam DUCK_TIME = 1;
   .rst(rst),
   .time_in(DUCK_TIME),
   .state_in(state),
+  .clicked_duck(clicked_duck),
   .end_of_time(game_timer)
   );
    
@@ -37,7 +39,7 @@ localparam DUCK_TIME = 1;
          hor_data <= 10'b0001111111; //1111...
 	  else if(hor_data_next>960 && game_timer == 1)
 		 hor_data <= 450;
-      else if(game_timer == 1)
+      else if(game_timer == 1 || clicked_duck == 1)
          hor_data <= hor_data_next;
 	  else
 	     hor_data <= hor_data;
@@ -53,7 +55,7 @@ localparam DUCK_TIME = 1;
    always@(posedge clk) begin
       if(rst)
          ver_data <= 10'b0001111111; //01111...
-      else if(game_timer == 1)
+      else if(game_timer == 1 || clicked_duck == 1)
          ver_data <= ver_data_next + 96;
 	  else
 	     ver_data <= ver_data;
