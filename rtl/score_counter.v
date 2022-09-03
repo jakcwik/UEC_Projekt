@@ -5,16 +5,16 @@ module score_counter(
     input wire clk, rst,  
 	input wire clicked_duck,    
 
-    output reg[7:0] score
+    output reg[6:0] score
 ); 
       
-reg [7:0] s_counter_nxt;        //max 255
+reg [6:0] score_nxt;        //max 127
 
 always@(posedge clicked_duck or posedge rst) begin
 	if(rst)
-		s_counter_nxt = 0;
+		score_nxt = 0;
 	else
-		s_counter_nxt = score + 1;
+		score_nxt = score + 1;
 end
 
 
@@ -23,7 +23,7 @@ always@(posedge clk) begin
 		score <= 0;
     end
     else begin
-		score <= s_counter_nxt;
+		score <= score_nxt;
     end
 end
 endmodule

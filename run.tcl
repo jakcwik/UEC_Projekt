@@ -77,6 +77,7 @@ read_verilog {
     rtl/game_timer.v
     rtl/ran_num_gen.v
     rtl/score_counter.v
+    rtl/score2ascii_converter.v
 }
 
 read_vhdl {

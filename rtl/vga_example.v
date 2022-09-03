@@ -65,9 +65,9 @@ module vga_example (
   wire [10:0] char_addr;
   wire [9:0]  hor_ran_number;
   wire [9:0]  ver_ran_number;
-  wire [7:0]  score;
   wire [7:0]  char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
   wire [6:0]  char_code_play, char_code_wait, char_code_score;
+  wire [6:0]  score, my_ascii_0, my_ascii_1;
   wire [3:0]  char_line_play, char_line_wait, char_line_score;
   wire [1:0]  state;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
@@ -90,7 +90,7 @@ module vga_example (
 	//inputs
 	.rect_clicked_play(rect_clicked_play),
 	.uart_start(uart_start),
-	.mouse_clicked_stop(mouse_clicked_stop),
+	.mouse_clicked_stop(mouse_left),
 	.rgb_out_rc_play(rgb_out_rc_play),
 	.rgb_out_rc_wait(rgb_out_rc_wait),
 	.rgb_out_dr_game(rgb_out_dr),
@@ -412,12 +412,20 @@ module vga_example (
 	.char_line_pixels(char_pixels_score)
   );
   
+  score2ascii_converter my_score2ascii_converter(
+    .clk(pclk),
+	.rst(rst_d),
+	.score(score),
+	.ascii_1(my_ascii_1),
+	.ascii_0(my_ascii_0)
+  );
+  
   char_rom_score my_char_rom_score(
     .clk(pclk),
 	.char_xy(char_xy_score),
 	.char_code_out(char_code_score),
-	.my_score_ASCII_1(7'h31),                  //kody ASCII - 7 bitów
-	.my_score_ASCII_0(7'h31),				  //1 - cyfra dziesiątek
+	.my_score_ASCII_1(my_ascii_1),                  //kody ASCII - 7 bitów
+	.my_score_ASCII_0(my_ascii_0),				  //1 - cyfra dziesiątek
 	.op_score_ASCII_1(7'h33),				  //0 - cyfra jedności
 	.op_score_ASCII_0(7'h31),
 	.number_of_player(7'h32)    // do napisania: moduł do porównania wyników obu graczy
