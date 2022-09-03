@@ -53,7 +53,6 @@ module vga_example (
     .S(1'b0)
   );
 
-  wire [15:0] my_score, op_score;
   wire [11:0] rgb_out_bg, rgb_out_dr; 
   wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play, rgb_out_rc_score;
   wire [11:0] pixel_addr, rgb_pixel;
