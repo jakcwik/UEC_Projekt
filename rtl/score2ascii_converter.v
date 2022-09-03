@@ -1,6 +1,6 @@
 module score2ascii_converter(
     input wire clk, rst,  
-	input wire score,
+	input wire[6:0] score,
 
     output reg[6:0] ascii_1,
 	output reg[6:0] ascii_0
@@ -62,7 +62,7 @@ end
 
 always@* begin
 	if(rst) begin
-		ascii_0_nxt = 0;
+		ascii_0_nxt = 7'h30;
 	end
 	else
 		case(score_0)
@@ -76,6 +76,7 @@ always@* begin
 		7: ascii_0_nxt = 7'h37;
 		8: ascii_0_nxt = 7'h38;
 		9: ascii_0_nxt = 7'h39;
+		default: ascii_0_nxt = 7'h30;
 		endcase
 end
 

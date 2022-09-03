@@ -22,10 +22,10 @@
 
 module char_rom_score(
 	input wire clk,
-	input wire [13:0] my_score_ASCII_1,
-	input wire [13:0] my_score_ASCII_0,
-	input wire [13:0] op_score_ASCII_1,
-	input wire [13:0] op_score_ASCII_0,
+	input wire [6:0] my_score_ASCII_1,
+	input wire [6:0] my_score_ASCII_0,
+	input wire [6:0] op_score_ASCII_1,
+	input wire [6:0] op_score_ASCII_0,
 	input wire [6:0] number_of_player,
     input wire [7:0] char_xy,
     output reg [6:0] char_code_out 
@@ -45,7 +45,8 @@ module char_rom_score(
                8'h04: char_code = 7'h45; // E
                8'h05: char_code = 7'h3a; // :
                8'h06: char_code = 7'h00; //   
-               8'h07: char_code = 7'h00; //                8'h08: char_code = 7'h00; // 
+               8'h07: char_code = 7'h00; //                
+			   8'h08: char_code = 7'h00; // 
                8'h09: char_code = 7'h00; // 
                8'h0a: char_code = 7'h00; // 
                8'h0b: char_code = 7'h00; // 
@@ -57,13 +58,13 @@ module char_rom_score(
               8'h10: char_code = 7'h50; // P
               8'h11: char_code = 7'h6c; // l
               8'h12: char_code = 7'h61; // a 
-              8'h13: char_code = 7'h79; // y             8'h14: char_code = 7'h00; // 
+              8'h13: char_code = 7'h79; // y             
               8'h14: char_code = 7'h65; // e 
               8'h15: char_code = 7'h72; // r
               8'h16: char_code = 7'h31; // 1
               8'h17: char_code = 7'h3a; // :
-              8'h18: char_code = my_score_ASCII_1[6:0]; // 
-              8'h19: char_code = my_score_ASCII_0[6:0]; // 
+              8'h18: char_code = my_score_ASCII_1; // 
+              8'h19: char_code = my_score_ASCII_0; // 
               8'h1a: char_code = 7'h00; //
               8'h1b: char_code = 7'h00; // 
               8'h1c: char_code = 7'h00; //  
@@ -79,8 +80,8 @@ module char_rom_score(
              8'h25: char_code = 7'h72; // r 
              8'h26: char_code = 7'h32; // 2
              8'h27: char_code = 7'h3a; // :
-             8'h28: char_code = op_score_ASCII_1[6:0]; // e            8'h29: char_code = 7'h00; // 
-             8'h29: char_code = op_score_ASCII_0[6:0]; // r
+             8'h28: char_code = op_score_ASCII_1; // e            
+             8'h29: char_code = op_score_ASCII_0; // r
              8'h2a: char_code = 7'h00; // 
              8'h2b: char_code = 7'h00; // 
              8'h2c: char_code = 7'h00; //
@@ -132,7 +133,8 @@ module char_rom_score(
              8'h57: char_code = 7'h20; // 
              8'h58: char_code = 7'h20; // 
              8'h59: char_code = 7'h20; // 
-             8'h5a: char_code = 7'h20; //              8'h5b: char_code = 7'h20; // r
+             8'h5a: char_code = 7'h20; //              
+			 8'h5b: char_code = 7'h20; // 
              8'h5c: char_code = 7'h20; // 
              8'h5d: char_code = 7'h20; // 
              8'h5e: char_code = 7'h20; // 
@@ -163,7 +165,8 @@ module char_rom_score(
              8'h75: char_code = 7'h20; // 
              8'h76: char_code = 7'h20; // 
              8'h77: char_code = 7'h20; // 
-             8'h78: char_code = 7'h20; //              8'h79: char_code = 7'h72; // r
+             8'h78: char_code = 7'h20; //              
+			 8'h79: char_code = 7'h20; //
              8'h7a: char_code = 7'h20; // 
              8'h7b: char_code = 7'h20; // 
              8'h7c: char_code = 7'h20; // 

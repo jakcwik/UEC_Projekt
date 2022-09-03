@@ -36,6 +36,9 @@ always@* begin
 	end
     else if(state_in == GAME) begin        
 		if(end_of_time == 1'b1) begin
+			T_counter_nxt = 0;
+			ms_counter_nxt = 0;
+			s_counter_nxt = 0;
 			end_of_time_nxt = 1'b0;
 		end
         else if(T_counter == 75000) begin
@@ -58,9 +61,9 @@ always@* begin
         end
 		else begin
 			T_counter_nxt = T_counter + 1;
-			ms_counter_nxt = ms_counter_nxt;
-			s_counter_nxt = s_counter_nxt;
-			end_of_time_nxt = end_of_time_nxt;
+			ms_counter_nxt = ms_counter;
+			s_counter_nxt = s_counter;
+			end_of_time_nxt = end_of_time;
 		end
     end
 	else begin

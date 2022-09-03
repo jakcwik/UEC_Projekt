@@ -210,7 +210,7 @@ module vga_example (
 	.hlength(hlength_click_play),
 	.vlength(vlength_click_play),
 	//outputs
-    .rect_clicked(rect_clicked_play)     
+    .rect_clicked(rect_clicked_play)     //musi byc wysłane przez uart do drugiego urządzenia
   );
 
   draw_rect_char idle_rect_char (

@@ -40,7 +40,14 @@ parameter IDLE = 2'b00, WAIT = 2'b01, GAME = 2'b10, SCORE = 2'b11, GAME_TIME = 6
 
 always@* begin
 	if (rst_d) begin
-		state_nxt = GAME;
+		state_nxt 			   = GAME;
+		idle_height_play_nxt   = 0;
+		vstart_click_play_nxt  = 0;
+		idle_width_play_nxt    = 0;
+		hstart_click_play_nxt  = 0;
+		hlength_click_play_nxt = 0;
+		vlength_click_play_nxt = 0;
+		rgb_out_rc_nxt 		   = rgb_out_rc_wait;
 	end
 	else
 		case (state)
@@ -53,7 +60,7 @@ always@* begin
 					hstart_click_play_nxt  = 0;
 					hlength_click_play_nxt = 0;
 					vlength_click_play_nxt = 0;
-					rgb_out_rc_nxt = rgb_out_rc_wait;
+					rgb_out_rc_nxt		   = rgb_out_rc_wait;
 				end
 				else begin
 					state_nxt 			   = IDLE;
@@ -67,35 +74,78 @@ always@* begin
 				end
 			WAIT:
 				if (rect_clicked_play & uart_start) begin
-					state_nxt <= GAME;
-					rgb_out_rc_nxt = rgb_out_rc_wait;
+					state_nxt 			   = GAME;
+					idle_height_play_nxt   = 0;
+					vstart_click_play_nxt  = 0;				
+					idle_width_play_nxt    = 0;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
+					rgb_out_rc_nxt 		   = rgb_out_rc_wait;
 				end
 				else begin
 					state_nxt 			   = WAIT;
 					rgb_out_rc_nxt 		   = rgb_out_rc_wait;
 					idle_height_play_nxt   = 186;
+					vstart_click_play_nxt  = 0;
 					idle_width_play_nxt    = 380;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
 				end
 			GAME:
 				if (game_timer == 0) begin
-					state_nxt = GAME;
-					rgb_out_rc_nxt = rgb_out_dr_game;
+					state_nxt 			   = GAME;
+					idle_height_play_nxt   = 0;
+					vstart_click_play_nxt  = 0;				
+					idle_width_play_nxt    = 0;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
+					rgb_out_rc_nxt		   = rgb_out_dr_game;
 				end
 				else begin
-					state_nxt = GAME;
-					rgb_out_rc_nxt = rgb_out_dr_game;
+					state_nxt 			   = SCORE;
+					idle_height_play_nxt   = 0;
+					vstart_click_play_nxt  = 0;				
+					idle_width_play_nxt    = 0;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
+					rgb_out_rc_nxt 		   = rgb_out_dr_game;
 				end
 			SCORE:
-				if(mouse_clicked_stop)
-					state_nxt = IDLE;
+				if(mouse_clicked_stop) begin
+					state_nxt 			   = IDLE;
+					idle_height_play_nxt   = 186;
+					vstart_click_play_nxt  = 186;				
+					idle_width_play_nxt    = 380;
+					hstart_click_play_nxt  = 380;
+					hlength_click_play_nxt = 300;
+					vlength_click_play_nxt = 100;
+					rgb_out_rc_nxt 		   = rgb_out_rc_play;
+				end
 				else begin
 					state_nxt			   = SCORE;
 					rgb_out_rc_nxt 		   = rgb_out_rc_score;
 					idle_height_play_nxt   = 186;
+					vstart_click_play_nxt  = 0;
 					idle_width_play_nxt    = 380;
+					hstart_click_play_nxt  = 0;
+					hlength_click_play_nxt = 0;
+					vlength_click_play_nxt = 0;
 				end
 			default:
-				state_nxt =IDLE;
+				begin
+					state_nxt 			   = IDLE;
+					idle_height_play_nxt   = 186;
+					vstart_click_play_nxt  = 186;				
+					idle_width_play_nxt    = 380;
+					hstart_click_play_nxt  = 380;
+					hlength_click_play_nxt = 300;
+					vlength_click_play_nxt = 100;
+					rgb_out_rc_nxt 		   = rgb_out_rc_play;
+				end
 		endcase
 	end
 
