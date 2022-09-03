@@ -67,7 +67,7 @@ module vga_example (
   wire [9:0]  ver_ran_number;
   wire [7:0]  char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
   wire [6:0]  char_code_play, char_code_wait, char_code_score;
-  wire [6:0]  score, my_ascii_0, my_ascii_1;
+  wire [6:0]  my_score, my_ascii_0, my_ascii_1, op_score, op_ascii_0, op_ascii_1, winner;
   wire [3:0]  char_line_play, char_line_wait, char_line_score;
   wire [1:0]  state;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
@@ -321,7 +321,7 @@ module vga_example (
 
   score_counter my_score_counter(
   .clicked_duck(rect_clicked_duck),
-  .score(score),      							// <- wynik musi iść do modułu ASCII !!!
+  .score(my_score),      							// <- wynik musi iść do modułu ASCII !!!
   .rst(rst_d),
   .clk(pclk)
   );
@@ -415,9 +415,25 @@ module vga_example (
   score2ascii_converter my_score2ascii_converter(
     .clk(pclk),
 	.rst(rst_d),
-	.score(score),
+	.score(my_score),
 	.ascii_1(my_ascii_1),
 	.ascii_0(my_ascii_0)
+  );
+ 
+   score2ascii_converter op_score2ascii_converter(
+    .clk(pclk),
+	.rst(rst_d),
+	.score(op_score),                  //z UART
+	.ascii_1(op_ascii_1),
+	.ascii_0(op_ascii_0)
+  );
+  
+  compare_score my_compare_score(
+    .clk(pclk),
+	.rst(rst_d),
+	.my_score(my_score),
+	.op_score(op_score),               //z UART
+	.winner(winner)
   );
   
   char_rom_score my_char_rom_score(
@@ -426,9 +442,9 @@ module vga_example (
 	.char_code_out(char_code_score),
 	.my_score_ASCII_1(my_ascii_1),                  //kody ASCII - 7 bitów
 	.my_score_ASCII_0(my_ascii_0),				  //1 - cyfra dziesiątek
-	.op_score_ASCII_1(7'h33),				  //0 - cyfra jedności
-	.op_score_ASCII_0(7'h31),
-	.number_of_player(7'h32)    // do napisania: moduł do porównania wyników obu graczy
+	.op_score_ASCII_1(op_ascii_1),				  //0 - cyfra jedności
+	.op_score_ASCII_0(op_ascii_0),
+	.number_of_player(winner)    // do napisania: moduł do porównania wyników obu graczy
    );							//(z uwagi na tylko dwóch graczy wystarczy zwykłe porównanie bez konwersji do ascii)
    
 

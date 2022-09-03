@@ -1,5 +1,3 @@
-//plik roboczy
-//trzeba ustawić aby sygnał clicked_duck był jednostkowy
 
 module score_counter(
     input wire clk, rst,  

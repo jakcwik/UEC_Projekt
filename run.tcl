@@ -78,6 +78,7 @@ read_verilog {
     rtl/ran_num_gen.v
     rtl/score_counter.v
     rtl/score2ascii_converter.v
+    rtl/compare_score.v
 }
 
 read_vhdl {
