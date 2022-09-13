@@ -208,6 +208,7 @@ module vga_example (
 	.vstart(vstart_click_play),
 	.hlength(hlength_click_play),
 	.vlength(vlength_click_play),
+	.state_in(state),
 	//outputs
     .rect_clicked(rect_clicked_play)     //musi byc wysłane przez uart do drugiego urządzenia
   );
@@ -320,6 +321,7 @@ module vga_example (
 
   score_counter my_score_counter(
   .clicked_duck(rect_clicked_duck),
+  .state_in(state),
   .score(my_score),      							// <- wynik musi iść do modułu ASCII !!!
   .rst(rst_d),
   .clk(pclk)

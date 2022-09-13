@@ -9,7 +9,8 @@
  */
 //////////////////////////////////////////////////////////////////////////////
 module score_counter(
-    input wire clk, rst,  
+    input wire clk, rst,
+	input wire state_in,
 	input wire clicked_duck,    
 
     output reg[6:0] score
