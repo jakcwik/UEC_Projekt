@@ -37,9 +37,6 @@ if {[lindex $argv 0] == "program"} {
 
 read_xdc {
     constraints/vga_example.xdc
-    constraints/clk_wiz_0.xdc
-    constraints/clk_wiz_0_late.xdc
-    constraints/clk_wiz_0_ooc.xdc
     constraints/clk_wiz_1.xdc
     constraints/clk_wiz_1_late.xdc
     constraints/clk_wiz_1_ooc.xdc
@@ -61,7 +58,6 @@ read_verilog {
     rtl/sync_delay.v
     rtl/sync_after_image.v
     
-    rtl/celownik_rom.v
     rtl/image_rom.v
     rtl/font_rom.v
     rtl/char_rom_play.v

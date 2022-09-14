@@ -74,9 +74,9 @@ module vga_example (
   wire [1:0]  state;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
   wire hsync, hsync_out_bg, hs_out_dr, hs_out_rc;
-  wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc, vblnk_out;
-  wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc, hblnk_out;
-  wire mouse_left, mouse_left_out_mouse;
+  wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc;
+  wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc;
+  wire mouse_left, mouse_left_out_mouse, mouse_right, mouse_right_out_mouse;
   wire rect_clicked_play, rect_clicked_duck, mouse_clicked_stop, uart_start;
 //------------------------------------------------------------------------------
 // all modules in project
@@ -90,7 +90,7 @@ module vga_example (
 	//inputs
 	.rect_clicked_play(rect_clicked_play),
 	.uart_start(uart_start),
-	.mouse_clicked_stop(mouse_left),
+	.mouse_clicked_stop(mouse_right),
 	.rgb_out_rc_play(rgb_out_rc_play),
 	.rgb_out_rc_wait(rgb_out_rc_wait),
 	.rgb_out_dr_game(rgb_out_dr),
@@ -149,8 +149,8 @@ module vga_example (
 	 //inputs from draw_rect
     .xpos(xpos),
     .ypos(ypos),
-    .hcount(hcount_out_rc),
-    .vcount(vcount_out_rc),
+    .hcount({1'b0,hcount_out_rc}),
+    .vcount({1'b0,vcount_out_rc}),
     .blank(hblnk_out_rc || vblnk_out_rc),
     .rgb_in(rgb_out_rc[11:0]),
 	//outputs
@@ -159,8 +159,6 @@ module vga_example (
     //outputs from draw_rect
 	.hcount_out(hcount_out),
 	.vcount_out(vcount_out),
-	.hblnk_out(hblnk_out),
-	.vblnk_out(vblnk_out),
     .r(r),
     .g(g),
     .b(b),
@@ -177,6 +175,7 @@ module vga_example (
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
 	.mouse_left(mouse_left_out_mouse),
+	.mouse_right(mouse_right_out_mouse),
 	//clock and reset
 	.rst(rst_d),
 	.mclk(mclk),
@@ -187,9 +186,11 @@ module vga_example (
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
 	.left(mouse_left_out_mouse),
+	.right(mouse_right_out_mouse),
 	.xpos_out(xpos),
 	.ypos_out(ypos),
 	.left_out(mouse_left),
+	.right_out(mouse_right),
 	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
@@ -321,7 +322,7 @@ module vga_example (
 
   score_counter my_score_counter(
   .clicked_duck(rect_clicked_duck),
-  .state_in(state),
+  .mouse_right(mouse_right),
   .score(my_score),      							// <- wynik musi iść do modułu ASCII !!!
   .rst(rst_d),
   .clk(pclk)
@@ -443,12 +444,12 @@ module vga_example (
     .clk(pclk),
 	.char_xy(char_xy_score),
 	.char_code_out(char_code_score),
-	.my_score_ASCII_1(my_ascii_1),                  //kody ASCII - 7 bitów
-	.my_score_ASCII_0(my_ascii_0),				  //1 - cyfra dziesiątek
-	.op_score_ASCII_1(op_ascii_1),				  //0 - cyfra jedności
+	.my_score_ASCII_1(my_ascii_1),                 
+	.my_score_ASCII_0(my_ascii_0),				  
+	.op_score_ASCII_1(op_ascii_1),				  
 	.op_score_ASCII_0(op_ascii_0),
-	.number_of_player(winner)    // do napisania: moduł do porównania wyników obu graczy
-   );							//(z uwagi na tylko dwóch graczy wystarczy zwykłe porównanie bez konwersji do ascii)
+	.number_of_player(winner)  
+   );						
    
 
 endmodule

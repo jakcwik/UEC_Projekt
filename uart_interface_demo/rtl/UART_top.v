@@ -6,6 +6,7 @@ module UART_top(
     //input wire read_uart_but,
     input wire rx,
     output wire tx,
+    output reg tx_pmod,
     
     input wire BUT1, BUT2, BUT3,
     
@@ -15,6 +16,10 @@ module UART_top(
     wire [7:0] w_data, r_data;
     wire rx_empty, tx_full, rd_uart, wr_uart;
     
+    always@(posedge clk)
+    begin
+        tx_pmod <= tx;
+    end
     uart my_uart(
         //inputs
         .clk(clk),

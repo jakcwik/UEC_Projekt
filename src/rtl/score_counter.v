@@ -10,9 +10,8 @@
 //////////////////////////////////////////////////////////////////////////////
 module score_counter(
     input wire clk, rst,
-	input wire state_in,
 	input wire clicked_duck,    
-
+	input wire mouse_right,
     output reg[6:0] score
 ); 
 //------------------------------------------------------------------------------
@@ -36,7 +35,7 @@ always@(posedge clk) begin
 		score <= 0;
     end
     else begin
-		score <= score_nxt;
+		score <= 0;
     end
 end
 endmodule

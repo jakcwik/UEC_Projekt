@@ -122,8 +122,8 @@ set_property PACKAGE_PIN U18 [get_ports {rst}]
 
 ##Pmod Header JA
 ##Sch name = JA1
-#set_property PACKAGE_PIN J1 [get_ports {rx_monitor}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {rx_monitor}]
+set_property PACKAGE_PIN J1 [get_ports {tx_pmod}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {tx_pmod}]
 ##Sch name = JA2
 #set_property PACKAGE_PIN L2 [get_ports {tx_monitor}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {tx_monitor}]

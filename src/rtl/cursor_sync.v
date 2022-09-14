@@ -8,10 +8,12 @@ module cursor_sync (
   input wire [11:0] xpos,
   input wire [11:0] ypos,
   input wire left,
+  input wire right,
   //outputs
   output reg [11:0] xpos_out,
   output reg [11:0] ypos_out,
   output reg left_out,
+  output reg right_out,
   //clock and reset
   input wire pclk,
   input wire rst
@@ -31,11 +33,13 @@ always @(posedge pclk)
 		xpos_out  <=0;
 		ypos_out  <=0;
 		left_out  <=0;
+		right_out <=0;
 	end
 	else begin
 		xpos_out	<=xpos;
 		ypos_out    <=ypos;
 		left_out    <=left;
+		right_out   <=right;
 
 	end
 endmodule

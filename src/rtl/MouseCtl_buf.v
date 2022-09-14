@@ -15,6 +15,7 @@ module MouseCtl_buf (
   input wire mclk,
   input wire rst, 
   output reg mouse_left,
+  output reg mouse_right,
   output reg [11:0] xpos,
   output reg [11:0] ypos
   );
@@ -22,7 +23,7 @@ module MouseCtl_buf (
 // local variables
 //------------------------------------------------------------------------------
   wire [11:0] xpos_out_mouse, ypos_out_mouse;
-  wire mouse_left_nxt;
+  wire mouse_left_nxt, mouse_right_nxt;
 //------------------------------------------------------------------------------
 // MouseCtl module
 //------------------------------------------------------------------------------
@@ -32,6 +33,7 @@ module MouseCtl_buf (
 	.xpos(xpos_out_mouse),
 	.ypos(ypos_out_mouse),
 	.left(mouse_left_nxt),
+	.right(mouse_right_nxt),
 	.clk(mclk)
   );
 //------------------------------------------------------------------------------
@@ -45,6 +47,7 @@ module MouseCtl_buf (
 	end
 	else
 		mouse_left <=  mouse_left_nxt;
+		mouse_right <= mouse_right_nxt;
 		xpos <= xpos_out_mouse;
 		ypos <= ypos_out_mouse;
  end

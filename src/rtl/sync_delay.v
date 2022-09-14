@@ -15,8 +15,8 @@ module sync_delay (
   input wire hs_in,
   input wire blank,
   input wire [11:0] rgb_in,
-  input wire [10:0] hcount,
-  input wire [10:0] vcount,
+  input wire [11:0] hcount,
+  input wire [11:0] vcount,
   input wire [11:0] xpos,
   input wire [11:0] ypos,
   //outputs
@@ -24,7 +24,6 @@ module sync_delay (
   output reg [3:0] g,
   output reg [3:0] b,
   output reg [10:0] hcount_out, vcount_out,
-  output wire hblnk_out, vblnk_out,
   output reg vs_out,
   output reg hs_out,
   //clock and reset
@@ -35,43 +34,10 @@ module sync_delay (
 // local variables
 //------------------------------------------------------------------------------
 wire [3:0] r_out,g_out,b_out;
+wire en_mouse;
 reg[10:0] vcount_d, hcount_d;
 reg vs_d, hs_d;
-//wire [11:0] pixel_addr_s, rgb_pixel_s;
-//wire [11:0] rgb_out;
-/*
-   draw_rect celownik(
-	//inputs
-  	.hcount_in(hcount),
-	.hsync_in(hs_in),
-	.hblnk_in(hblnk),
-	.vcount_in(vcount),
-	.vsync_in(vs_in),
-	.vblnk_in(vblnk),
-	.rgb_in(rgb_in),
-	.rgb_pixel(rgb_pixel_s),
-	.xpos(xpos),
-	.ypos(ypos),
-	//outputs
-	.hcount_out(hcount_out),
-	.hsync_out(hs_out),
-	.hblnk_out(hblnk_out),
-	.vcount_out(vcount_out),
-	.vsync_out(vs_out),
-	.vblnk_out(vblnk_out),
-	.rgb_out(rgb_out),
-	.pixel_addr(pixel_addr_s),
-	//others
-	.rst(rst),
-	.pclk(pclk)
-  );
-  
-   celownik_rom my_celownik_rom (
-    .clk(pclk),
-	.address(pixel_addr_s),
-	.rgb(rgb_pixel_s)
-  );
-  */
+
   MouseDisplay my_MouseDisplay (
      //inputs
     .pixel_clk(pclk),
@@ -83,6 +49,7 @@ reg vs_d, hs_d;
     .red_in(rgb_in[11:8]),
     .green_in(rgb_in[7:4]),
     .blue_in(rgb_in[3:0]),
+	.enable_mouse_display_out(en_mouse),
     //outputs
     .red_out(r_out),
     .green_out(g_out),
@@ -94,8 +61,8 @@ reg vs_d, hs_d;
 always @(posedge pclk) begin
 		vs_d  <= vs_in;
 		hs_d  <= hs_in;
-		vcount_d <= vcount;
-		hcount_d <= hcount;
+		vcount_d <= vcount[10:0];
+		hcount_d <= hcount[10:0];
 	end
 //------------------------------------------------------------------------------
 // output register with sync reset
