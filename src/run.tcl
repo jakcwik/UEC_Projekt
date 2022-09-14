@@ -75,6 +75,15 @@ read_verilog {
     rtl/score_counter.v
     rtl/score2ascii_converter.v
     rtl/compare_score.v
+	
+	rtl/fifo.v
+	rtl/mod_m_counter.v
+	rtl/uart.v 
+	rtl/uart_interface.v 
+	rtl/uart_rx.v 
+	rtl/uart_top.v 
+	rtl/uart_tx.v 
+	
 }
 
 read_vhdl {

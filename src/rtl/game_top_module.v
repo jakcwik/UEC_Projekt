@@ -13,7 +13,9 @@ module game_top_module (
   inout wire ps2_clk,
   inout wire ps2_data,
   input wire clk,
-  input wire rst, 
+  input wire rst,
+  input wire rx,
+  output wire tx, 
   output wire vs,
   output wire hs,
   output wire [3:0] r,
@@ -68,8 +70,9 @@ module game_top_module (
   wire [9:0]  hor_ran_number;
   wire [9:0]  ver_ran_number;
   wire [7:0]  char_pixels_play, char_pixels_wait, char_pixels_score, char_xy_play, char_xy_wait, char_xy_score;
+  wire [7:0]  op_score;
   wire [6:0]  char_code_play, char_code_wait, char_code_score;
-  wire [6:0]  my_score, my_ascii_0, my_ascii_1, op_score, op_ascii_0, op_ascii_1, winner;
+  wire [6:0]  my_score, my_ascii_0, my_ascii_1, op_ascii_0, op_ascii_1, winner;
   wire [3:0]  char_line_play, char_line_wait, char_line_score;
   wire [1:0]  state;
   wire vsync, vsync_out_bg, vs_out_dr, vs_out_rc;
@@ -165,6 +168,19 @@ module game_top_module (
 	//clock and reset
 	.rst(rst_d),
 	.pclk(pclk)
+  );
+//UART
+  uart_top my_uart_top (
+	.rx(rx),
+	.game_state(state),
+	.my_score({1'b0,my_score}),
+	//outputs
+	.tx(tx),
+	.start_game(uart_start),
+	.score_2nd_player(op_score),
+	//clock and reset
+	.rst(rst_d),
+	.clk(pclk)
   );
 
 //MOUSE

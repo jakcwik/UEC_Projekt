@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////////
 module score2ascii_converter(
     input wire clk, rst,  
-	input wire[6:0] score,
+	input wire[7:0] score,
 
     output reg[6:0] ascii_1,
 	output reg[6:0] ascii_0
@@ -28,45 +28,45 @@ always@* begin
 		ascii_1_nxt = 0;
 		score_0_nxt = 0;
 	end
-	else if(score < 10) begin
+	else if(score[6:0] < 10) begin
 		ascii_1_nxt = 7'h30;
-		score_0_nxt = score;
+		score_0_nxt = score[6:0];
 	end
-    else if(score < 20) begin        
+    else if(score[6:0] < 20) begin        
 		ascii_1_nxt = 7'h31;
-		score_0_nxt = score - 10;
+		score_0_nxt = score[6:0] - 10;
     end
-	else if(score < 30) begin
+	else if(score[6:0] < 30) begin
 		ascii_1_nxt = 7'h32;
-		score_0_nxt = score - 20;
+		score_0_nxt = score[6:0] - 20;
 	end
-    else if(score < 40) begin        
+    else if(score[6:0] < 40) begin        
 		ascii_1_nxt = 7'h33;
-		score_0_nxt = score - 30;
+		score_0_nxt = score[6:0] - 30;
     end
-	else if(score < 50) begin
+	else if(score[6:0] < 50) begin
 		ascii_1_nxt = 7'h34;
-		score_0_nxt = score - 40;
+		score_0_nxt = score[6:0] - 40;
 	end
-    else if(score < 60) begin        
+    else if(score[6:0] < 60) begin        
 		ascii_1_nxt = 7'h35;
-		score_0_nxt = score - 50;
+		score_0_nxt = score[6:0] - 50;
     end
-	else if(score < 70) begin
+	else if(score[6:0] < 70) begin
 		ascii_1_nxt = 7'h36;
-		score_0_nxt = score - 60;
+		score_0_nxt = score[6:0] - 60;
 	end
-    else if(score < 80) begin        
+    else if(score[6:0] < 80) begin        
 		ascii_1_nxt = 7'h37;
-		score_0_nxt = score - 70;
+		score_0_nxt = score[6:0] - 70;
     end
-	else if(score < 90) begin
+	else if(score[6:0] < 90) begin
 		ascii_1_nxt = 7'h38;
-		score_0_nxt = score - 80;
+		score_0_nxt = score[6:0] - 80;
 	end
-    else if(score < 100) begin        
+    else if(score[6:0] < 100) begin        
 		ascii_1_nxt = 7'h39;
-		score_0_nxt = score - 90;
+		score_0_nxt = score[6:0] - 90;
     end
 	else begin
 		ascii_1_nxt = 0;

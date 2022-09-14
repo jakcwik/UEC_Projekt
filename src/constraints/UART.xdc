@@ -6,11 +6,13 @@
 
 ##Pmod Header JA
 ##Sch name = JA1
-#set_property PACKAGE_PIN J1 [get_ports {JA[0]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[0]}]
+#JC TX BLUE
+set_property PACKAGE_PIN J1 [get_ports tx]					
+	set_property IOSTANDARD LVCMOS33 [get_ports tx]
 ##Sch name = JA2
-#set_property PACKAGE_PIN L2 [get_ports {JA[1]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[1]}]
+#JC RX RED
+set_property PACKAGE_PIN L2 [get_ports rx]					
+	set_property IOSTANDARD LVCMOS33 [get_ports rx]
 ##Sch name = JA3
 #set_property PACKAGE_PIN J2 [get_ports {JA[2]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[2]}]

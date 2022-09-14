@@ -68,7 +68,7 @@ always@* begin
 		case (state)
 			IDLE:
 				if (rect_clicked_play == 1) begin
-					state_nxt 			   = GAME;
+					state_nxt 			   = WAIT;
 					idle_height_play_nxt   = 0;
 					vstart_click_play_nxt  = 0;
 					idle_width_play_nxt    = 0;
@@ -88,7 +88,7 @@ always@* begin
 					rgb_out_rc_nxt = rgb_out_rc_play;
 				end
 			WAIT:
-				if (rect_clicked_play & uart_start) begin
+				if (uart_start) begin
 					state_nxt 			   = GAME;
 					idle_height_play_nxt   = 0;
 					vstart_click_play_nxt  = 0;				

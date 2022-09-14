@@ -10,7 +10,8 @@
 //////////////////////////////////////////////////////////////////////////////
 module compare_score(
     input wire clk, rst,  
-	input wire[6:0] my_score, op_score,    
+	input wire[6:0] my_score,
+	input wire[7:0] op_score,    
 
     output reg[6:0] winner
 ); 
@@ -22,7 +23,7 @@ reg [6:0] winner_nxt;        //max 127
 // logic
 //------------------------------------------------------------------------------
 always@* begin
-	if(my_score > op_score)
+	if(my_score > op_score[6:0])
 		winner_nxt = 7'h31;
 	else
 		winner_nxt = 7'h32;

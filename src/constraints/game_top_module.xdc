@@ -60,3 +60,13 @@ set_property IOSTANDARD LVCMOS33 [get_ports {ps2_data}]
 
 set_property PULLUP true [get_ports ps2_clk]
 set_property PULLUP true [get_ports ps2_data]
+
+##Pmod Header JA
+##Sch name = JA1
+#JC TX BLUE
+set_property PACKAGE_PIN J2 [get_ports tx]					
+	set_property IOSTANDARD LVCMOS33 [get_ports tx]
+##Sch name = JA2
+#JC RX RED
+set_property PACKAGE_PIN G2 [get_ports rx]					
+	set_property IOSTANDARD LVCMOS33 [get_ports rx]
