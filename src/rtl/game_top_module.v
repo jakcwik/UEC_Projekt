@@ -9,7 +9,7 @@
  Description:  Top module
  */
 //////////////////////////////////////////////////////////////////////////////
-module vga_example (
+module game_top_module (
   inout wire ps2_clk,
   inout wire ps2_data,
   input wire clk,

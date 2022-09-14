@@ -1,5 +1,5 @@
-set project lab
-set top_module vga_example
+set project game
+set top_module game_top_module
 set target xc7a35tcpg236-1
 set bitstream_file build/${project}.runs/impl_1/${top_module}.bit
 
@@ -36,7 +36,7 @@ if {[lindex $argv 0] == "program"} {
 }
 
 read_xdc {
-    constraints/vga_example.xdc
+    constraints/game_top_module.xdc
     constraints/clk_wiz_1.xdc
     constraints/clk_wiz_1_late.xdc
     constraints/clk_wiz_1_ooc.xdc
@@ -47,7 +47,7 @@ read_verilog {
     rtl/clk_wiz_1_clk_wiz.v
     rtl/rst_d.v
 
-    rtl/vga_example.v
+    rtl/game_top_module.v
     rtl/vga_timing.v
 
     rtl/draw_background.v

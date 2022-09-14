@@ -35,7 +35,7 @@ always@(posedge clk) begin
 		score <= 0;
     end
     else begin
-		score <= 0;
+		score <= score_nxt;
     end
 end
 endmodule

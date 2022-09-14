@@ -44,7 +44,7 @@ module testbench;
   
   // Instantiate the vga_example module.
   
-  vga_example my_example (
+  game_top_module my_example (
     //.mouse_left(mouse_left),
 	//.xpos_test(xpos),
 	//.ypos_test(ypos),

@@ -122,8 +122,8 @@ set_property PACKAGE_PIN U18 [get_ports {rst}]
 
 ##Pmod Header JA
 ##Sch name = JA1
-set_property PACKAGE_PIN J1 [get_ports {tx_pmod}]					
-	set_property IOSTANDARD LVCMOS33 [get_ports {tx_pmod}]
+set_property PACKAGE_PIN J1 [get_ports {tx}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {tx}]
 ##Sch name = JA2
 #set_property PACKAGE_PIN L2 [get_ports {tx_monitor}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {tx_monitor}]
@@ -265,8 +265,8 @@ set_property PACKAGE_PIN J1 [get_ports {tx_pmod}]
 ##USB-RS232 Interface
 set_property PACKAGE_PIN B18 [get_ports rx]						
 	set_property IOSTANDARD LVCMOS33 [get_ports rx]
-set_property PACKAGE_PIN A18 [get_ports tx]						
-	set_property IOSTANDARD LVCMOS33 [get_ports tx]
+#set_property PACKAGE_PIN A18 [get_ports tx]						
+	#set_property IOSTANDARD LVCMOS33 [get_ports tx]
 
 
 ##USB HID (PS/2)
