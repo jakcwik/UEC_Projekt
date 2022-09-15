@@ -1,4 +1,11 @@
-// Listing 4.20
+//////////////////////////////////////////////////////////////////////////////
+/*
+ Module name:   fifo.v
+ Source: MTM_UEC_lab2_6_fpga_vlog_sample_chapter
+ Description:  This module provides buffer for uart interface.
+ */
+//////////////////////////////////////////////////////////////////////////////
+
 module fifo
    #(
     parameter B=8, // number of bits in a word

@@ -7,6 +7,7 @@
  Last modified: 2017-04-03
  Coding style: safe, with FPGA sync reset
  Description:   This module has been created to gather all submodules used for UART connection between two devices.
+				It passes state 
 
  */
 //////////////////////////////////////////////////////////////////////////////
@@ -24,7 +25,6 @@ module uart_top(
     //to game
     output wire start_game,           
     output wire [7:0] score_2nd_player
-    //input wire BUT1, BUT2, BUT3,
     );
     
     wire [7:0] w_data, r_data;
@@ -45,10 +45,6 @@ module uart_top(
         .r_data(r_data)
     );
 
-    //wire [7:0] my_score, score_2nd_player;
-    //wire [1:0] state_out;
-    //wire start_game;
-    
     uart_interface my_uart_interface(
         //inputs
         .clk(clk),
@@ -65,32 +61,5 @@ module uart_top(
         .start_game(start_game),
         .score_2nd_player(score_2nd_player)
     ); 
-        
-    //wire end_of_time; //state decides
-        
-    // sm my_sm(
-    //     //inputs
-    //     .clk(clk), 
-    //     .rst(rst),
-    //     .BUT1(BUT1), 
-    //     .BUT2(BUT2), 
-    //     .BUT3(BUT3),
-    //     .rival_score(score_2nd_player), 
-    //     .start_sig(start_game),
-    //     .end_of_time(end_of_time),
-    //     //outputs
-    //     .my_score(my_score),
-    //     .LED1(LED1),
-    //     .state_out(state_out)
-    // );
-    
-    // game_timer my_game_timer(
-    // //inputs
-    // .clk(clk),
-    // .rst(rst),  
-    // .state_in(state_out),      
-    // //outputs
-    // .end_of_time(end_of_time)
-    // ); 
 
 endmodule

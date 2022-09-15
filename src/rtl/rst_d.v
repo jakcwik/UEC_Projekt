@@ -3,9 +3,9 @@
  Module name:   rst_d
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2020-08-20
  Coding style: safe, with FPGA sync reset
- Description:  Template for simple module with registered outputs
+ Description:  This module delays reset signal.
  */
 //////////////////////////////////////////////////////////////////////////////
 module rst_d (

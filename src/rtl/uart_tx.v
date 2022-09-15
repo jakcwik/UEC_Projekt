@@ -1,4 +1,10 @@
-//Listing 8.3
+//////////////////////////////////////////////////////////////////////////////
+/*
+ Module name:   uart.v
+ Source: MTM_UEC_lab2_6_fpga_vlog_sample_chapter Listing 8.3
+ Description: This modules provides uart transmiter logic. 
+*/
+//////////////////////////////////////////////////////////////////////////////
 module uart_tx
    #(
      parameter DBIT = 8,     // # data bits

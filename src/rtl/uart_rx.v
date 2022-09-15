@@ -1,4 +1,10 @@
-//Listing 8.1
+//////////////////////////////////////////////////////////////////////////////
+/*
+ Module name:   uart.v
+ Source: MTM_UEC_lab2_6_fpga_vlog_sample_chapter Listing 8.1
+ Description: This modules provides uart receiver logic. 
+*/
+//////////////////////////////////////////////////////////////////////////////
 module uart_rx
    #(
      parameter DBIT = 8,     // # data bits

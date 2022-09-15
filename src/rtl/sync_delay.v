@@ -4,9 +4,9 @@
  Module name:   sync_delay
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2022-04-03
+ Last modified: 2022-08-20
  Coding style: safe, with FPGA sync reset
- Description:  Template for simple module with registered outputs
+ Description:  This module displays mouse cursor and synchronizes vs and hs signal.
  */
 //////////////////////////////////////////////////////////////////////////////
 module sync_delay (

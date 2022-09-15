@@ -6,7 +6,7 @@
  Version:       1.0
  Last modified: 2022-09-03
  Coding style: safe, with FPGA sync reset
- Description:  Template for simple module with registered outputs
+ Description:  This module provides proper displaying on the monitor.
  */
 //////////////////////////////////////////////////////////////////////////////
 module vga_timing (

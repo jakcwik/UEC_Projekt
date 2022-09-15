@@ -3,9 +3,9 @@
  Module name:   MouseCtl_buf
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2020-08-20
  Coding style: safe, with FPGA sync reset
- Description:  Template for simple module with registered outputs
+ Description:  This module synchronizes two clocks in order to proper mouse behaviour.
  */
 //////////////////////////////////////////////////////////////////////////////
 module MouseCtl_buf (

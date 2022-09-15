@@ -4,16 +4,14 @@
  Module name:   game_timer
  Author:        Jan Pawlak
  Version:       1.0
- Last modified: 2022-04-03
+ Last modified: 2022-08-20
  Coding style: safe, with FPGA sync reset
- Description:  Template for simple module with registered outputs
+ Description:  This module has been created to measure time spent in GAME state.
+			   Module acquires which state is game in. If player enters GAME state it starts to measure
+			   time and after parametrized amout of time it sends signal to main module in order to enter SCORE state.
+			   Exiting state GAME depends on this module. 
  */
 //////////////////////////////////////////////////////////////////////////////
-//This module has been created to measure time spent in GAME state.
-//Module acquires which state is game in. If player enters GAME state it starts to measure
-//time and after parametrized amout of time it sends signal to main module in order to enter 
-//SCORE state.
-//Exiting STATE GAME depends on this module. 
 module game_timer(
     input wire clk, rst,  
 	input wire[15:0] time_in,

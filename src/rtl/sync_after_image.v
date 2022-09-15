@@ -4,9 +4,9 @@
  Module name:   sync_after_image
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2020-08-20
  Coding style: safe, with FPGA sync reset
- Description:  The module that provides correct synchronization after the signal has passed through the rom memory
+ Description:  This module provides correct synchronization after the signal has passed through the rom memory.
  */
 //////////////////////////////////////////////////////////////////////////////
 module sync_after_image (

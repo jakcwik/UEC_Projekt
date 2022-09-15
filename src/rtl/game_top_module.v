@@ -1,10 +1,10 @@
 `timescale 1 ns / 1 ps
 //////////////////////////////////////////////////////////////////////////////
 /*
- Module name:   vga_example
+ Module name:   game_top_module
  Author:        Jakub Ćwik/Jan Pawlak
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2022-09-14
  Coding style: safe, with FPGA sync reset
  Description:  Top module
  */
@@ -61,7 +61,7 @@ module game_top_module (
   wire [11:0] rgb_out_bg, rgb_out_dr, rgb_in_sa; 
   wire [11:0] rgb_out_rc, rgb_out_rc_wait, rgb_out_rc_play, rgb_out_rc_score;
   wire [11:0] pixel_addr, rgb_pixel;
-  wire [11:0] xpos, ypos, xpos_out_drc, ypos_out_drc, xpos_out_mouse, ypos_out_mouse;
+  wire [11:0] xpos, ypos;
   wire [11:0] idle_height_play, idle_width_play;
   wire [10:0] vcount, vcount_out_bg, vcount_out_dr, vcount_out_rc, vcount_out;
   wire [10:0] hcount, hcount_out_bg, hcount_out_dr, hcount_out_rc, hcount_out;
@@ -79,7 +79,7 @@ module game_top_module (
   wire hsync, hsync_out_bg, hs_out_dr, hs_out_rc;
   wire vblnk, vblnk_out_bg, vblnk_out_dr, vblnk_out_rc;
   wire hblnk, hblnk_out_bg, hblnk_out_dr, hblnk_out_rc;
-  wire mouse_left, mouse_left_out_mouse, mouse_right, mouse_right_out_mouse;
+  wire mouse_left, mouse_right;
   wire rect_clicked_play, rect_clicked_duck, mouse_clicked_stop, uart_start;
 //------------------------------------------------------------------------------
 // all modules in project
@@ -188,29 +188,16 @@ module game_top_module (
   MouseCtl_buf my_MouseCtl_buf (
 	.ps2_clk(ps2_clk),
 	.ps2_data(ps2_data),
-	.xpos(xpos_out_mouse),
-	.ypos(ypos_out_mouse),
-	.mouse_left(mouse_left_out_mouse),
-	.mouse_right(mouse_right_out_mouse),
+	.xpos(xpos),
+	.ypos(ypos),
+	.mouse_left(mouse_left),
+	.mouse_right(mouse_right),
 	//clock and reset
 	.rst(rst_d),
 	.mclk(mclk),
 	.pclk(pclk)
   );
 
-  cursor_sync my_cursor_sync (
-	.xpos(xpos_out_mouse),
-	.ypos(ypos_out_mouse),
-	.left(mouse_left_out_mouse),
-	.right(mouse_right_out_mouse),
-	.xpos_out(xpos),
-	.ypos_out(ypos),
-	.left_out(mouse_left),
-	.right_out(mouse_right),
-	//clock and reset
-	.rst(rst_d),
-	.pclk(pclk)
-  );
   
 // STATE IDLE
   
@@ -435,7 +422,7 @@ module game_top_module (
   score2ascii_converter my_score2ascii_converter(
     .clk(pclk),
 	.rst(rst_d),
-	.score(my_score),
+	.score({1'b0,my_score}),
 	.ascii_1(my_ascii_1),
 	.ascii_0(my_ascii_0)
   );

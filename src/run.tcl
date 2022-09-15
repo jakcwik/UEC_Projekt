@@ -1,40 +1,26 @@
 set project game
 set top_module game_top_module
 set target xc7a35tcpg236-1
-set bitstream_file build/${project}.runs/impl_1/${top_module}.bit
+set bitstream_file ../vivado/build/${project}.runs/impl_1/${top_module}.bit
 
+# Print how to use the script
 proc usage {} {
-    puts "usage: vivado -mode tcl -source [info script] -tclargs \[simulation/bitstream/program\]"
-    exit 1
+puts "===========================================================================\n
+usage: vivado -mode tcl -source [info script] -tclargs \[open/rebuild/sim/bit/prog\]\n
+\topen    - open project and start gui\n
+\trebuild - clear build directory and create the project again from sources, then open gui\n
+\tsim     - run simulation\n
+\tbit     - generate bitstream\n
+\tprog    - load bitstream to FPGA\n
+If a project is already created in the build directory, run.tcl opens it. Otherwise, creates a new one.
+==========================================================================="
 }
 
-if {($argc != 1) || ([lindex $argv 0] ni {"simulation" "bitstream" "program"})} {
-    usage
-}
-
-
-
-if {[lindex $argv 0] == "program"} {
-    open_hw
-    connect_hw_server
-    current_hw_target [get_hw_targets *]
-    open_hw_target
-    current_hw_device [lindex [get_hw_devices] 0]
-    refresh_hw_device -update_hw_probes false [lindex [get_hw_devices] 0]
-
-    set_property PROBES.FILE {} [lindex [get_hw_devices] 0]
-    set_property FULL_PROBES.FILE {} [lindex [get_hw_devices] 0]
-    set_property PROGRAM.FILE ${bitstream_file} [lindex [get_hw_devices] 0]
-
-    program_hw_devices [lindex [get_hw_devices] 0]
-    refresh_hw_device [lindex [get_hw_devices] 0]
+# Create project
+proc create_new_project {project target top_module} {
+    file mkdir ../vivado/build
+    create_project ${project} ../vivado/build -part ${target} -force
     
-    exit
-} else {
-    file mkdir build
-    create_project ${project} build -part ${target} -force
-}
-
 read_xdc {
     constraints/game_top_module.xdc
     constraints/clk_wiz_1.xdc
@@ -64,7 +50,6 @@ read_verilog {
     rtl/char_rom_wait.v
     rtl/char_rom_score.v
 
-    rtl/cursor_sync.v
     rtl/click_ctl.v
     rtl/click_image_ctl.v
     rtl/MouseCtl_buf.v
@@ -94,25 +79,100 @@ read_vhdl {
 add_files -fileset sim_1 {
     sim/testbench.v
     sim/tiff_writer.v
-
-    
-    
 }
 
-set_property top ${top_module} [current_fileset]
-update_compile_order -fileset sources_1
-update_compile_order -fileset sim_1
+    set_property top ${top_module} [current_fileset]
+    update_compile_order -fileset sources_1
+    update_compile_order -fileset sim_1
+}
 
-if {[lindex $argv 0] == "simulation"} {
+# Open existing project
+proc open_existing_project {project} {
+    open_project ../vivado/build/$project.xpr
+    update_compile_order -fileset sources_1
+    update_compile_order -fileset sim_1
+}
+
+# If project already exists, open it. Otherwise, create it.
+proc open_or_create_project {project target top_module} {
+    if {[file exists ../vivado/build/$project.xpr] == 1} {
+        open_existing_project $project 
+    } else {
+        create_new_project $project $target $top_module
+    }
+}
+
+
+# Load bitstream to FPGA
+proc program_fpga {bitstream_file} {
+    if {[file exists $bitstream_file] == 0} {
+        puts "ERROR: No bitstream found"
+    } else {
+        open_hw_manager
+        connect_hw_server
+        current_hw_target [get_hw_targets *]
+        open_hw_target
+        current_hw_device [lindex [get_hw_devices] 0]
+        refresh_hw_device -update_hw_probes false [lindex [get_hw_devices] 0]
+
+        set_property PROBES.FILE {} [lindex [get_hw_devices] 0]
+        set_property FULL_PROBES.FILE {} [lindex [get_hw_devices] 0]
+        set_property PROGRAM.FILE ${bitstream_file} [lindex [get_hw_devices] 0]
+
+        program_hw_devices [lindex [get_hw_devices] 0]
+        refresh_hw_device [lindex [get_hw_devices] 0]
+    }
+}
+
+# Simulation
+proc simulation {} {
     launch_simulation
-    start_gui
+    # run all
+}
 
-
-} else {
+# Generate bitstream
+proc bitstream {} {
+    # Run synthesis
+    reset_run synth_1
     launch_runs synth_1 -jobs 8
     wait_on_run synth_1
-
+    
+    # Run implemenatation up to bitstream generation
     launch_runs impl_1 -to_step write_bitstream -jobs 8
     wait_on_run impl_1
-    exit
+}
+
+## MAIN
+if {$argc == 1} {
+    switch $argv {
+        open {
+            open_or_create_project $project $target $top_module    
+            start_gui
+        }
+        rebuild {
+            create_new_project $project $target $top_module    
+            start_gui
+        }
+        sim {
+            open_or_create_project $project $target $top_module    
+            simulation
+            start_gui
+        }
+        bit {
+            open_or_create_project $project $target $top_module    
+            bitstream
+            exit
+        }
+        prog {
+            program_fpga $bitstream_file
+            exit
+        }
+        default {
+            usage
+            exit 1
+        }
+    }
+} else {
+    usage
+    exit 1
 }

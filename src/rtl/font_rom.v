@@ -4,16 +4,10 @@
  Module name:   font_rom
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2020-08-20
  Coding style: Xilinx recommended + ANSI ports
- Description:  Template for ROM module as recommended by Xilinx
-
- ** This example shows the use of the Vivado rom_style attribute
- **
- ** Acceptable values are:
- ** block : Instructs the tool to infer RAMB type components.
- ** distributed : Instructs the tool to infer LUT ROMs.
- **
+ Description:  This module acquires ASCII code and returns pixels values in order to draw them on the screen. 
+			   Template for ROM module is used as recommended by Xilinx.
  */
 //////////////////////////////////////////////////////////////////////////////
 module font_rom(

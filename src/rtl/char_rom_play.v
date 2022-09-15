@@ -4,15 +4,9 @@
  Module name:   char_rom_play
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2022-08-20
  Coding style: Xilinx recommended + ANSI ports
- Description:  Template for ROM module as recommended by Xilinx
-
- ** This example shows the use of the Vivado rom_style attribute
- **
- ** Acceptable values are:
- ** block : Instructs the tool to infer RAMB type components.
- ** distributed : Instructs the tool to infer LUT ROMs.
+ Description: This module stores ASCII code for START word. Template for ROM module is used as recommended by Xilinx.
  **
  */
 //////////////////////////////////////////////////////////////////////////////
@@ -250,33 +244,33 @@ module char_rom_play(
              8'hce: char_code = 7'h20; // 
              8'hcf: char_code = 7'h20; //
 			//***************************************
-             8'hd0: char_code = 7'h5a; // Z
-             8'hd1: char_code = 7'h6c; // l
-             8'hd2: char_code = 7'h61; // a
-             8'hd3: char_code = 7'h63; // c
-             8'hd4: char_code = 7'h7a; // z
-             8'hd5: char_code = 7'h79; // y
-             8'hd6: char_code = 7'h6d; // m
+             8'hd0: char_code = 7'h5a; // 
+             8'hd1: char_code = 7'h6c; // 
+             8'hd2: char_code = 7'h61; // 
+             8'hd3: char_code = 7'h63; // 
+             8'hd4: char_code = 7'h7a; //
+             8'hd5: char_code = 7'h79; // 
+             8'hd6: char_code = 7'h6d; // 
              8'hd7: char_code = 7'h20; // 
-             8'hd8: char_code = 7'h73; // s
-             8'hd9: char_code = 7'h69; // i
-             8'hda: char_code = 7'h65; // e
+             8'hd8: char_code = 7'h73; // 
+             8'hd9: char_code = 7'h69; // 
+             8'hda: char_code = 7'h65; // 
              8'hdb: char_code = 7'h20; // 
              8'hdc: char_code = 7'h20; // 
              8'hdd: char_code = 7'h20; // 
              8'hde: char_code = 7'h20; // 
              8'hdf: char_code = 7'h20; // 
 			//***************************************
-             8'he0: char_code = 7'h5a; // z
+             8'he0: char_code = 7'h5a; // 
              8'he1: char_code = 7'h20; // 
-             8'he2: char_code = 7'h6e; // n
-             8'he3: char_code = 7'h61; // a
-             8'he4: char_code = 7'h72; // r
-             8'he5: char_code = 7'h6f; // o
-             8'he6: char_code = 7'h64; // d
-             8'he7: char_code = 7'h65; // e
-             8'he8: char_code = 7'h6d; // m
-             8'he9: char_code = 7'h2e; // .
+             8'he2: char_code = 7'h6e; // 
+             8'he3: char_code = 7'h61; // 
+             8'he4: char_code = 7'h72; // 
+             8'he5: char_code = 7'h6f; // 
+             8'he6: char_code = 7'h64; // 
+             8'he7: char_code = 7'h65; // 
+             8'he8: char_code = 7'h6d; // 
+             8'he9: char_code = 7'h2e; // 
              8'hea: char_code = 7'h20; // 
              8'heb: char_code = 7'h20; // 
              8'hec: char_code = 7'h20; // 
@@ -284,22 +278,22 @@ module char_rom_play(
              8'hee: char_code = 7'h20; //
              8'hef: char_code = 7'h20; // 
 			//***************************************
-             8'hf0: char_code = 7'h18; // ^
-             8'hf1: char_code = 7'h18; // ^
-             8'hf2: char_code = 7'h18; // ^
-             8'hf3: char_code = 7'h18; // ^
-             8'hf4: char_code = 7'h18; // ^
-             8'hf5: char_code = 7'h18; // ^
-             8'hf6: char_code = 7'h18; //^
-             8'hf7: char_code = 7'h18; // ^
-             8'hf8: char_code = 7'h18; // ^
-             8'hf9: char_code = 7'h18; // ^
-             8'hfa: char_code = 7'h18; // ^
-             8'hfb: char_code = 7'h18; // ^
-             8'hfc: char_code = 7'h18; // ^
-             8'hfd: char_code = 7'h18; // ^
-             8'hfe: char_code = 7'h18; // ^
-             8'hff: char_code = 7'h18; // ^
+             8'hf0: char_code = 7'h18; // 
+             8'hf1: char_code = 7'h18; // 
+             8'hf2: char_code = 7'h18; // 
+             8'hf3: char_code = 7'h18; // 
+             8'hf4: char_code = 7'h18; // 
+             8'hf5: char_code = 7'h18; // 
+             8'hf6: char_code = 7'h18; //
+             8'hf7: char_code = 7'h18; // 
+             8'hf8: char_code = 7'h18; // 
+             8'hf9: char_code = 7'h18; //
+             8'hfa: char_code = 7'h18; // 
+             8'hfb: char_code = 7'h18; // 
+             8'hfc: char_code = 7'h18; // 
+             8'hfd: char_code = 7'h18; // 
+             8'hfe: char_code = 7'h18; // 
+             8'hff: char_code = 7'h18; // 
             endcase
    
     

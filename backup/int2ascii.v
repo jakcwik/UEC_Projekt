@@ -1,15 +1,22 @@
-//This module has been created to convert score from integer value to ascii code. 
-//It acquires decimal value. As an output it returns two digits (LSD, MSD) in ascii.  
-//
-//NOTE: Two digit score assumed
+//////////////////////////////////////////////////////////////////////////////
+/*
+ Module name:   int2ascii
+ Author:        Jan Pawlak
+ Version:       1.0
+ Last modified: 2017-04-03
+ Coding style: Xilinx recommended + ANSI ports
+ Description:  This module has been created to convert score from integer value to ascii code. 
+			   It acquires decimal value. As an output it returns two digits (LSD, MSD) in ascii.  
+			   NOTE: Two digit score assumed
+//////////////////////////////////////////////////////////////////////////////
 
 `timescale 1ns / 1ps
 
 module int2ascii(
     input wire /*clk*/, rst,
     //from game
-    input wire [7:0] score,         //???
-    //to char_rom_score             //???
+    input wire [7:0] score,         
+    //to char_rom_score             
     output wire [3:0] lsd_ascii,
     output wire [3:0] msd_ascii
 );

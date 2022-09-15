@@ -1,4 +1,10 @@
-//Listing 8.4
+//////////////////////////////////////////////////////////////////////////////
+/*
+ Module name:   uart.v
+ Source: MTM_UEC_lab2_6_fpga_vlog_sample_chapter Listing 8.4
+ Description: In this module uart parameters are set (as described below) and uart logic submodules are connected.
+ */
+//////////////////////////////////////////////////////////////////////////////
 module uart
    #( // Default setting:
       // 19,200 baud, 8 data bits, 1 stop bit, 2^2 FIFO

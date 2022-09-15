@@ -3,9 +3,9 @@
  Module name:   score2ascii_converter
  Author:        Jakub Ćwik
  Version:       1.0
- Last modified: 2022-??-??
+ Last modified: 2022-08-20
  Coding style: safe, with FPGA sync reset
- Description:  Score converter to ascii code
+ Description:  This module converts score to ASCII (integer to ASCII).
  */
 //////////////////////////////////////////////////////////////////////////////
 module score2ascii_converter(

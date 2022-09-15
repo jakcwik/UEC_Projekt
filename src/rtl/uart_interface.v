@@ -4,15 +4,17 @@
  Module name:   uart_interface
  Author:        Jan Pawlak
  Version:       1.0
- Last modified: 2017-04-03
+ Last modified: 2020-07-20
  Coding style: safe, with FPGA sync reset
  Description:   This module has been created to control communication between two devices through UART.
-				Module informs the rival's device if we are in WAIT state and acquires information
-				from rival's device about its state. 
+				Module acquires state signal from our device, informs rival's device if we are in WAIT state
+				and acquires information from rival's device about its state. 
 				Given that our device is in WAIT state if rival's device enters or already is in WAIT 
 				state our device enters GAME state. 
-
-				Note: WAIT_STATE_SIGNAL and my score are being CONTINUOSLY send through UART (when called).
+				After game time it acquires our score and sends it to rival's device, receives rival's score and sends it 
+				to game logic for further comparation.
+				
+				Note: WAIT_STATE_SIGNAL and my_score are being continuosly send through UART (when called).
 				WAIT_STATE_SIGNAL value has been chosen arbitraly.
  */
 //////////////////////////////////////////////////////////////////////////////

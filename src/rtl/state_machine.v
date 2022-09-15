@@ -3,9 +3,9 @@
  Module name:   state_machine
  Author:        Jakub Ćwik/Jan Pawlak
  Version:       1.0
- Last modified: 2022-??-??
+ Last modified: 2022-09-14
  Coding style: safe with FPGA sync reset
- Description:  State machine for UEC2 project
+ Description:  This module provides state machine (4 states). It is the core of the game. 
  */
 //////////////////////////////////////////////////////////////////////////////
 module state_machine (
